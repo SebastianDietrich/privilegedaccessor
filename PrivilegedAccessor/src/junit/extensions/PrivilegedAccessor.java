@@ -347,10 +347,12 @@ public final class PrivilegedAccessor {
      *        (e.g. "myMethod(java.lang.String, com.company.project.MyObject)")
      * @param args an array of objects to pass as arguments
      * @return the return value of this method or null if void
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws IllegalArgumentException
+     * @throws IllegalAccessException if this Method object enforces Java
+     *         language access control and the underlying method is
+     *         inaccessible.
+     * @throws InvocationTargetException if the underlying method throws an exception.
+     * @throws NoSuchMethodException  if the method could not be found
+     * @throws IllegalArgumentException if the arguments don't match the methodSignature
      * @see PrivilegedAccessor#invokeMethod(Class,String,Object[])
      */
     public static Object invokeMethod(final Object instanceOrClass,
