@@ -80,26 +80,30 @@ public class PrivilegedAccessorTest extends TestCase {
     public void testGetValueOnInvalidField() throws Exception {
         try {
             PrivilegedAccessor.getValue(this.parent, "noSuchField");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.getValue(this.child, "noSuchField");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.getValue(this.childInParent, "noSuchField");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.getValue(TestParent.class, "noSuchField");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
     }
 
@@ -144,26 +148,30 @@ public class PrivilegedAccessorTest extends TestCase {
     public void testSetValueOnInvalidField() throws Exception {
         try {
             PrivilegedAccessor.setValue(this.parent, "noSuchField", "value");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.setValue(this.child, "noSuchField", "value");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.setValue(this.childInParent, "noSuchField", "value");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.setValue(TestParent.class, "noSuchField", "value");
-        } catch (Exception e) {
-            assertEquals(NoSuchFieldException.class, e.getClass());
+            fail("should throw NoSuchFieldException");
+        } catch (NoSuchFieldException e) {
+            //that is what we expect
         }
     }
 
@@ -204,26 +212,30 @@ public class PrivilegedAccessorTest extends TestCase {
     public void testInvokeMethodOnInvalidMethodName() throws Exception {
         try {
             PrivilegedAccessor.invokeMethod(this.child, "noSuchMethod", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.invokeMethod(this.parent, "noSuchMethod", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.invokeMethod(this.childInParent, "noSuchMethod", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.invokeMethod(TestParent.class, "noSuchMethod", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
     }
 
@@ -235,26 +247,44 @@ public class PrivilegedAccessorTest extends TestCase {
     public void testInvokeMethodWithInvalidArguments() throws Exception {
         try {
             PrivilegedAccessor.invokeMethod(this.child, "setData(java.lang.String)", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
 
         try {
             PrivilegedAccessor.invokeMethod(this.parent, "setData(java.lang.String)", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
+        }
+        
+        try {
+            PrivilegedAccessor.invokeMethod(this.childInParent, "setData(java.lang.String)", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
 
         try {
-            PrivilegedAccessor.invokeMethod(this.childInParent, "setData(java.lang.String)", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
-        }
+            PrivilegedAccessor.invokeMethod(this.child, "setName(java.lang.String)", new Integer(2));
+            fail("should throw NoSuchMethodException");
+        } catch (IllegalArgumentException e) {
+            //that is what we expect
+        }            
+
+        try {
+            PrivilegedAccessor.invokeMethod(this.child, "setNumber(int)", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (IllegalArgumentException e) {
+            //that is what we expect
+        }             
 
         try {
             PrivilegedAccessor.invokeMethod(TestParent.class, "setStaticNumber(java.lang.String)", "Herbert");
-        } catch (Exception e) {
-            assertEquals(NoSuchMethodException.class, e.getClass());
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            //that is what we expect
         }
     }
 
@@ -266,6 +296,11 @@ public class PrivilegedAccessorTest extends TestCase {
     public void testInvokeStaticMethod() throws Exception {
         PrivilegedAccessor.invokeMethod(TestParent.class, "setStaticNumber(int)", 3);
         assertEquals(new Integer(3), PrivilegedAccessor.getValue(TestParent.class, "privateStaticNumber"));
+    }
+    
+    public void testInvokeMethodWithMoreThanOnePrimitive() throws Exception {
+        PrivilegedAccessor.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)", new Integer[]{new Integer(5), new Integer(3)});
+        assertEquals(new Integer(8), PrivilegedAccessor.getValue(this.child, "privateNumber"));        
     }
 
     /**
