@@ -25,6 +25,6 @@ public class TestChild extends TestParent {
 
     private void setData(String name, Integer number) {
         setName(name);
-        privateNumber = number.intValue();
+        this.privateNumber = number.intValue();
     }
 }

@@ -2,30 +2,57 @@ package junit.extensions;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests for the class <code>PrivilegedAccessor</code>
+ */
 public class PrivilegedAccessorTest extends TestCase {
+    /**
+     * an instance of a test-superclass.
+     */
     private TestParent parent;
-
+    /**
+     * an instance of a test-subclass
+     */
     private TestChild child;
-
+    /**
+     * an instance of a test-subclass in a variable of type superclass
+     */
     private TestParent childInParent;
 
-    public static void main(String[] args) {
+    /**
+     * The main test-method
+     * @param unused not used
+     */
+    public static void main(final String[] unused) {
         junit.textui.TestRunner.run(PrivilegedAccessorTest.class);
     }
 
-    public void setUp() {
+    /**
+     * sets up the test-environment by instantiating the test-instances
+     * @see junit.framework.TestCase#setUp()
+     */
+    public final void setUp() {
         this.parent = new TestParent("Charlie");
         this.child = new TestChild("Charlie");
         this.childInParent = new TestChild("Charlie");
     }
 
-    public void tearDown() {
+    /**
+     * tears down the test-environment by deleting the test-instances
+     * @see junit.framework.TestCase#tearDown()
+     */
+    public final void tearDown() {
         this.parent = null;
         this.child = null;
         this.childInParent = null;
     }
 
-    public void testGetValue() throws Exception {
+    /**
+     * tests the method <code>getValue</code>
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
+     */
+    public final void testGetValue() throws Exception {
         assertEquals("Charlie", PrivilegedAccessor.getValue(this.parent, "privateName"));
 
         assertEquals("Charlie", PrivilegedAccessor.getValue(this.child, "privateName"));
@@ -35,12 +62,21 @@ public class PrivilegedAccessorTest extends TestCase {
         assertEquals(new Integer(8), PrivilegedAccessor.getValue(this.childInParent, "privateNumber"));
     }
 
+    /**
+     * tests the method <code>getValue</code> with a static field
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
+     */
     public void testGetValueOfStaticField() throws Exception {
         assertEquals(new Integer(1), PrivilegedAccessor.getValue(this.parent, "privateStaticNumber"));
-        
         assertEquals(new Integer(1), PrivilegedAccessor.getValue(TestParent.class, "privateStaticNumber"));
     }
 
+    /**
+     * tests the method <code>getValue</code> with a non-existing field
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
+     */
     public void testGetValueOnInvalidField() throws Exception {
         try {
             PrivilegedAccessor.getValue(this.parent, "noSuchField");
@@ -59,7 +95,7 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (Exception e) {
             assertEquals(NoSuchFieldException.class, e.getClass());
         }
-        
+
         try {
             PrivilegedAccessor.getValue(TestParent.class, "noSuchField");
         } catch (Exception e) {
@@ -67,21 +103,31 @@ public class PrivilegedAccessorTest extends TestCase {
         }
     }
 
+    /**
+     * tests the method <code>setValue</code>
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
+     */
     public void testSetValue() throws Exception {
         PrivilegedAccessor.setValue(this.parent, "privateName", "Hubert");
         assertEquals("Hubert", PrivilegedAccessor.getValue(this.parent, "privateName"));
 
         PrivilegedAccessor.setValue(this.child, "privateName", "Hubert");
-        PrivilegedAccessor.setValue(this.child, "privateNumber", new Integer(6));
+        PrivilegedAccessor.setValue(this.child, "privateNumber", 6);
         assertEquals("Hubert", PrivilegedAccessor.getValue(this.child, "privateName"));
         assertEquals(new Integer(6), PrivilegedAccessor.getValue(this.child, "privateNumber"));
 
         PrivilegedAccessor.setValue(this.childInParent, "privateName", "Hubert");
-        PrivilegedAccessor.setValue(this.childInParent, "privateNumber", new Integer(6));
+        PrivilegedAccessor.setValue(this.childInParent, "privateNumber", 6);
         assertEquals("Hubert", PrivilegedAccessor.getValue(this.childInParent, "privateName"), "Hubert");
         assertEquals(new Integer(6), PrivilegedAccessor.getValue(this.childInParent, "privateNumber"));
     }
-    
+
+    /**
+     * tests the method <code>setValue</code> with a static field
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
+     */
     public void testSetValueOfStaticField() throws Exception {
         PrivilegedAccessor.setValue(this.parent, "privateStaticNumber", new Integer(6));
         assertEquals(new Integer(6), PrivilegedAccessor.getValue(this.parent, "privateStaticNumber"));
@@ -90,6 +136,11 @@ public class PrivilegedAccessorTest extends TestCase {
         assertEquals(new Integer(7), PrivilegedAccessor.getValue(this.parent, "privateStaticNumber"));
     }
 
+    /**
+     * tests the method <code>setValue</code> with a non-existing field
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
+     */
     public void testSetValueOnInvalidField() throws Exception {
         try {
             PrivilegedAccessor.setValue(this.parent, "noSuchField", "value");
@@ -108,7 +159,7 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (Exception e) {
             assertEquals(NoSuchFieldException.class, e.getClass());
         }
-        
+
         try {
             PrivilegedAccessor.setValue(TestParent.class, "noSuchField", "value");
         } catch (Exception e) {
@@ -116,6 +167,11 @@ public class PrivilegedAccessorTest extends TestCase {
         }
     }
 
+    /**
+     * tests the method <code>invokeMethod</code>
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
     public void testInvokeMethod() throws Exception {
         PrivilegedAccessor.invokeMethod(this.parent, "setName(java.lang.String)", "Herbert");
         assertEquals("Herbert", PrivilegedAccessor.getValue(this.parent, "privateName"));
@@ -125,7 +181,7 @@ public class PrivilegedAccessorTest extends TestCase {
         assertEquals("Herbert", PrivilegedAccessor.getValue(this.child, "privateName"), "Herbert");
         assertEquals(new Integer(3), PrivilegedAccessor.getValue(this.child, "privateNumber"));
 
-        Object args[] = { "Marcus", new Integer(5) };
+        Object[] args = {"Marcus", new Integer(5)};
         PrivilegedAccessor.invokeMethod(this.child, "setData(java.lang.String, java.lang.Integer)", args);
         assertEquals("Marcus", PrivilegedAccessor.getValue(this.child, "privateName"));
         assertEquals(new Integer(5), PrivilegedAccessor.getValue(this.child, "privateNumber"));
@@ -139,31 +195,12 @@ public class PrivilegedAccessorTest extends TestCase {
         assertEquals("Marcus", PrivilegedAccessor.getValue(this.childInParent, "privateName"));
         assertEquals(new Integer(5), PrivilegedAccessor.getValue(this.childInParent, "privateNumber"));
     }
-    
-    public void testInvokeMethodWithPrimitiveParameter() throws Exception {
-        PrivilegedAccessor.invokeMethod(this.parent, "setName(java.lang.String)", "Herbert");
-        assertEquals(PrivilegedAccessor.getValue(this.parent, "privateName"), "Herbert");
 
-        PrivilegedAccessor.invokeMethod(this.child, "setName(java.lang.String)", "Herbert");
-        PrivilegedAccessor.invokeMethod(this.child, "setNumber(int)", 3);
-        assertEquals(PrivilegedAccessor.getValue(this.child, "privateName"), "Herbert");
-        assertEquals(PrivilegedAccessor.getValue(this.child, "privateNumber"), new Integer(3));
-
-        Object args[] = { "Marcus", new Integer(5) };
-        PrivilegedAccessor.invokeMethod(this.child, "setData(java.lang.String, java.lang.Integer)", args);
-        assertEquals(PrivilegedAccessor.getValue(this.child, "privateName"), "Marcus");
-        assertEquals(PrivilegedAccessor.getValue(this.child, "privateNumber"), new Integer(5));
-
-        PrivilegedAccessor.invokeMethod(this.childInParent,"setName(java.lang.String)", "Herbert");
-        PrivilegedAccessor.invokeMethod(this.childInParent, "setNumber(int)", 3);
-        assertEquals(PrivilegedAccessor.getValue(this.childInParent, "privateName"), "Herbert");
-        assertEquals(PrivilegedAccessor.getValue(this.childInParent, "privateNumber"), new Integer(3));
-
-        PrivilegedAccessor.invokeMethod(this.childInParent, "setData(java.lang.String, java.lang.Integer)", args);
-        assertEquals(PrivilegedAccessor.getValue(this.childInParent, "privateName"), "Marcus");
-        assertEquals(PrivilegedAccessor.getValue(this.childInParent, "privateNumber"), new Integer(5));
-    }
-
+    /**
+     * tests the method <code>invokeMethod</code> on a non-existing method
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
     public void testInvokeMethodOnInvalidMethodName() throws Exception {
         try {
             PrivilegedAccessor.invokeMethod(this.child, "noSuchMethod", "Herbert");
@@ -182,7 +219,7 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (Exception e) {
             assertEquals(NoSuchMethodException.class, e.getClass());
         }
-        
+
         try {
             PrivilegedAccessor.invokeMethod(TestParent.class, "noSuchMethod", "Herbert");
         } catch (Exception e) {
@@ -190,6 +227,11 @@ public class PrivilegedAccessorTest extends TestCase {
         }
     }
 
+    /**
+     * tests the method <code>invokeMethod</code> with invalid arguments
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
     public void testInvokeMethodWithInvalidArguments() throws Exception {
         try {
             PrivilegedAccessor.invokeMethod(this.child, "setData(java.lang.String)", "Herbert");
@@ -208,7 +250,7 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (Exception e) {
             assertEquals(NoSuchMethodException.class, e.getClass());
         }
-        
+
         try {
             PrivilegedAccessor.invokeMethod(TestParent.class, "setStaticNumber(java.lang.String)", "Herbert");
         } catch (Exception e) {
@@ -216,17 +258,32 @@ public class PrivilegedAccessorTest extends TestCase {
         }
     }
 
+    /**
+     * tests the method <code>invokeMethod</code> on a static method
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
     public void testInvokeStaticMethod() throws Exception {
         PrivilegedAccessor.invokeMethod(TestParent.class, "setStaticNumber(int)", 3);
         assertEquals(new Integer(3), PrivilegedAccessor.getValue(TestParent.class, "privateStaticNumber"));
     }
-    
+
+    /**
+     * tests the method <code>instantiate</code>
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#instantiate(Class)
+     */
     public void testInstantiate() throws Exception {
         assertEquals(this.parent, PrivilegedAccessor.instantiate(TestParent.class));
-        assertEquals(this.child, PrivilegedAccessor.instantiate(TestChild.class, new Object[] { "Charlie", new Integer(8) }));
-        assertEquals(this.childInParent, PrivilegedAccessor.instantiate(TestChild.class, new Object[] { "Charlie", new Integer(8) }));
+        assertEquals(this.child, PrivilegedAccessor.instantiate(TestChild.class, new Object[] {"Charlie", new Integer(8)}));
+        assertEquals(this.childInParent, PrivilegedAccessor.instantiate(TestChild.class, new Object[] {"Charlie", new Integer(8)}));
     }
 
+    /**
+     * Constructor for this test.
+     * @param name
+     * @deprecated only necessary for junit prior to 3.8.1
+     */
     public PrivilegedAccessorTest(String name) {
         super(name);
     }
