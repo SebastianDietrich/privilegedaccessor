@@ -559,7 +559,7 @@ public final class PrivilegedAccessor {
      * @param instanceOrClass the instance or class to invoke the method on
      * @param methodSignature the name of the method and the parameters <br>
      *        (e.g. "myMethod(java.lang.String, com.company.project.MyObject)")
-     * @param args an array of objects to pass as arguments
+     * @param arguments an array of objects to pass as arguments
      * @return the return value of this method or null if void
      * @throws IllegalAccessException if the method is inaccessible
      * @throws InvocationTargetException if the underlying method throws an
@@ -572,16 +572,17 @@ public final class PrivilegedAccessor {
      * @see PrivilegedAccessor#invokeMethod(Class,String,Object[])
      */
     public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final Object[] args)
+            final String methodSignature, final Object[] arguments)
     throws IllegalArgumentException, IllegalAccessException,
     InvocationTargetException, NoSuchMethodException {
-        if (args == null) {
+        if (arguments == null) {
             return invokeMethod(instanceOrClass, methodSignature,
                     new Object[] {null});
         }
+        
         return getMethod(instanceOrClass, getMethodName(methodSignature),
-                getParameterTypes(methodSignature, args))
-                .invoke(instanceOrClass, args);
+                getParameterTypes(methodSignature, arguments)).
+                invoke(instanceOrClass,arguments);
     }
 
     /**
@@ -690,7 +691,7 @@ public final class PrivilegedAccessor {
      * @see PrivilegedAccessor#invokeMethod(Object,String,Object)
      */
     public static Object instantiate(final Class fromClass, final Object[] args)
-            throws IllegalArgumentException, InstantiationException,
+    throws IllegalArgumentException, InstantiationException,
             IllegalAccessException, InvocationTargetException,
             NoSuchMethodException {
         return instantiate(fromClass, getParameterTypes(args), args);
@@ -739,46 +740,114 @@ public final class PrivilegedAccessor {
             return null;
         }
 
-        Class[] classTypes = new Class[parameters.length];
+        Class[] typesOfParameters = new Class[parameters.length];
 
         for (int i = 0; i < parameters.length; i++) {
-            classTypes[i] = parameters[i].getClass();
+            typesOfParameters[i] = parameters[i].getClass();
         }
-        return classTypes;
+        return typesOfParameters;
     }
 
     /**
+     * Gets the types of the given parameters. If the parameters
+     * don't match the given methodSignature an IllegalArgumentException
+     * is thrown.
+     * 
      * @param methodSignature the signature of the method
      * @param parameters the arguments of the method
      * @return the parameter types as class[]
      * @throws NoSuchMethodException if the method could not be found
+     * @throws IllegalArgumentException if one of the given parameters
+     *                                  doesn't math the given methodSignature
      */
     private static Class[] getParameterTypes(final String methodSignature,
             final Object[] parameters)
-    throws NoSuchMethodException {
-        Class[] classTypes = new Class[parameters.length];
-        String[] params = methodSignature.substring(
-                methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'))
-                .split(", *");
+    throws NoSuchMethodException, IllegalArgumentException {
+        Class[] typesOfParameters = getTypesInSignature(methodSignature);
 
-        for (int i = 0; i < params.length; i++) {
-            try {
-                classTypes[i] = getClassForName(params[i]);
-            } catch (ClassNotFoundException e) {
-                throw new NoSuchMethodException("Method '" + methodSignature
-                        + "'s parameter nr" + i + " (" + params[i]
-                        + ") not found");
-            }
+        for (int i = 0; i < typesOfParameters.length; i++) {
             if (parameters[i] == null
-                || classTypes[i].isAssignableFrom(parameters[i].getClass())) {
+                || typesOfParameters[i].isAssignableFrom(parameters[i].getClass())
+                || isPrimitiveForm(typesOfParameters[i], parameters[i].getClass())) {
                 continue;
             }
             throw new IllegalArgumentException("Method '" + methodSignature
-                    + "'s parameter nr" + i + " (" + params[i]
+                    + "'s parameter nr" + i + " (" + typesOfParameters[i].getName()
                     + ") does not math argument type ("
                     + parameters.getClass().getName() + ")");
         }
-        return classTypes;
+        return typesOfParameters;
+    }
+
+    /**
+     * Gets the types in the method signature. The methodSignature
+     * is a comma separated string with fully qualified types
+     * e.g. java.lang.String, java.lang.Integer
+     *
+     * @param methodSignature the methodSignature to get the types from
+     * @return the types of the signature
+     * @throws NoSuchMethodException if the signature is not correct
+     */
+    private static Class[] getTypesInSignature(final String methodSignature)
+    throws NoSuchMethodException {
+        String[] typeNames = null;
+        try {
+            typeNames = methodSignature.substring(
+                methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'))
+                .split(", *");
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new NoSuchMethodException("Method '" + methodSignature
+                    + "' has no brackets");
+        }
+
+        Class[] typesInSignature = new Class[typeNames.length];
+
+        for (int i = 0; i < typeNames.length; i++) {
+            try {
+                typesInSignature[i] = getClassForName(typeNames[i]);
+            } catch (ClassNotFoundException e) {
+                throw new NoSuchMethodException("Method '" + methodSignature
+                        + "'s parameter nr" + i + " (" + typeNames[i]
+                        + ") not found");
+            }
+        }
+        return typesInSignature;
+    }
+
+    /**
+     * Tests if the given primitive is the primitive form for the given class
+     * 
+     * @param primitive the primitive to test
+     * @param type the type to check if the primitive corresponds to
+     * 
+     * @return true if the primitive matches the given type, otherwise false
+     */
+    private static boolean isPrimitiveForm(Class primitive, Class type) {
+        if (primitive  == Integer.TYPE && type == Integer.class) {
+            return true;
+        }
+        if (primitive  == Float.TYPE && type == Float.class) {
+            return true;
+        }
+        if (primitive  == Double.TYPE && type == Double.class) {
+            return true;
+        }
+        if (primitive  == Short.TYPE && type == Short.class) {
+            return true;
+        }
+        if (primitive  == Long.TYPE && type == Long.class) {
+            return true;
+        }
+        if (primitive  == Byte.TYPE && type == Byte.class) {
+            return true;
+        }
+        if (primitive  == Character.TYPE && type == Character.class) {
+            return true;
+        }
+        if (primitive  == Boolean.TYPE && type == Boolean.class) {
+            return true;
+        }
+        return false;
     }
 
     /**

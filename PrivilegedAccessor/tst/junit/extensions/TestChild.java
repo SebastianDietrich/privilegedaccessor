@@ -22,6 +22,10 @@ public class TestChild extends TestParent {
     private void setNumber(int number) {
         this.privateNumber = number;
     }
+    
+    private void setSumOfTwoNumbers(int number1, int number2) {
+        this.privateNumber = number1 + number2;
+    }
 
     private void setData(String name, Integer number) {
         setName(name);
