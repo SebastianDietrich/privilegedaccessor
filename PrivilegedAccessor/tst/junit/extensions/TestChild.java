@@ -27,8 +27,8 @@ public class TestChild extends TestParent {
         this.privateNumber = number1 + number2;
     }
 
-    private void setData(String name, Integer number) {
+    private void setData(String name, int number) {
         setName(name);
-        this.privateNumber = number.intValue();
+        this.privateNumber = number;
     }
 }
