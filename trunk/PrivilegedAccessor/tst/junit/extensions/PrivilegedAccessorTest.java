@@ -152,6 +152,11 @@ public class PrivilegedAccessorTest extends TestCase {
         try {
             PA.instantiate(PA.class);
             fail("Instantiating PA should throw Exception");
+        } catch (Exception e) {
+            //thats what we expect
+        }
+
+        try {
             PA.instantiate(PrivilegedAccessor.class);
             fail("Instantiating PrivilegedAccessor should throw Exception");
         } catch (Exception e) {
