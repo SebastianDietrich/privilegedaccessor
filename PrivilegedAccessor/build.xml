@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<project name="PrivilegedAccessor" default="jar" basedir=".">
+	<property name="src.dir"        value="src"/>
+	<property name="tst.dir"        value="tst"/>
+	<property name="bin.dir"        value="bin"/>
+	<property name="lib.dir"        value="libs"/>
+	<property name="tls.dir"        value="build"/>
+	<property name="doc.dir"        value="docs"/>
+	
+	<taskdef classpath="${tls.dir}/coverage-report/jcoverage.jar" resource="tasks.properties"/>
+
+	<target name="compile">
+		<javac source="1.4"
+			   srcdir="${src.dir}" 
+               destdir="${bin.dir}" 
+        	   classpath="${lib.dir}/junit_3.8.1.jar"
+        	   deprecation="false"
+               debug="${debug}"/>
+	</target>
+
+	<target name="compile tests" depends="compile">
+		<javac source="1.4"
+        	   srcdir="${tst.dir}" 
+               destdir="${bin.dir}" 
+	     	   classpath="${lib.dir}/junit_3.8.1.jar"
+               deprecation="true"
+               debug="${debug}"/>
+	</target>
+	
+	<target name="jar" depends="compile">
+	  <jar destfile="privilegedAccessor.jar"
+	       basedir="${bin.dir}"
+	  />
+	</target>
+	
+	<target name="instrument classes for jcoverage" depends="compile, compile tests">
+		<instrument todir="${bin.dir}/instrumented-classes">
+			<fileset dir="${bin.dir}">
+				<include name="**/*.class"/>
+				<exclude name="**/*Test*.class"/>
+			</fileset>
+			<classpath>
+				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
+			</classpath>
+		</instrument>
+	</target>
+	
+	<target name="runTests" depends="compile tests, instrument classes for jcoverage">
+		<java classname="junit.extensions.PrivilegedAccessorTest" fork="true">
+			<classpath>
+				<pathelement path="${bin.dir}/instrumented-classes"/>
+				<pathelement path="${bin.dir}"/>
+				<pathelement path="${lib.dir}/junit_3.8.1.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/jcoverage.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="coverage" depends="runTests">
+		<report srcdir="${src.dir}" destdir="${doc.dir}/coverage">
+			<classpath>
+				<pathelement path="${tls.dir}/coverage-report/jcoverage.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
+				<pathelement path="${tls.dir}/coverage-report/getopt/getopt-1.0.9.jar"/>
+			</classpath>
+		</report>
+	</target>
+</project>
