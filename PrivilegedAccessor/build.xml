@@ -1,16 +1,18 @@
 <?xml version="1.0"?>
 
-<project name="PrivilegedAccessor" default="jar" basedir=".">
+<project name="PrivilegedAccessor" default="distribute" basedir=".">
 	<property name="src.dir"        value="src"/>
 	<property name="tst.dir"        value="tst"/>
 	<property name="bin.dir"        value="bin"/>
 	<property name="lib.dir"        value="libs"/>
 	<property name="tls.dir"        value="build"/>
 	<property name="doc.dir"        value="docs"/>
+	<property name="dst.dir"        value="dist"/>
 	
 	<taskdef classpath="${tls.dir}/coverage-report/jcoverage.jar" resource="tasks.properties"/>
 
 	<target name="compile">
+		<mkdir dir="${bin.dir}"/>
 		<javac source="1.4"
 			   srcdir="${src.dir}" 
                destdir="${bin.dir}" 
@@ -20,6 +22,7 @@
 	</target>
 
 	<target name="compile tests" depends="compile">
+		<mkdir dir="${bin.dir}"/>
 		<javac source="1.4"
         	   srcdir="${tst.dir}" 
                destdir="${bin.dir}" 
@@ -29,48 +32,20 @@
 	</target>
 	
 	<target name="jar" depends="compile">
-	  <jar destfile="privilegedAccessor.jar"
+		<mkdir dir="${dst.dir}"/>
+		<jar destfile="${dst.dir}/privilegedAccessor_1.0.jar"
 	       basedir="${bin.dir}"
 	  />
 	</target>
 	
-	<target name="instrument classes for jcoverage" depends="compile, compile tests">
-		<instrument todir="${bin.dir}/instrumented-classes">
-			<fileset dir="${bin.dir}">
-				<include name="**/*.class"/>
-				<exclude name="**/*Test*.class"/>
-			</fileset>
-			<classpath>
-				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
-			</classpath>
-		</instrument>
+	<target name="zip" depends="jar">
+		<zip destfile="${dst.dir}/privilegedAccessor_1.0.src.zip">
+			<fileset dir="${src.dir}"/>
+			<fileset dir="${tst.dir}"/>
+		    <fileset dir="${dst.dir}" includes="privilegedAccessor_1.0.jar"/>
+		</zip>
 	</target>
 	
-	<target name="runTests" depends="compile tests, instrument classes for jcoverage">
-		<java classname="junit.extensions.PrivilegedAccessorTest" fork="true">
-			<classpath>
-				<pathelement path="${bin.dir}/instrumented-classes"/>
-				<pathelement path="${bin.dir}"/>
-				<pathelement path="${lib.dir}/junit_3.8.1.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/jcoverage.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
-			</classpath>
-		</java>
-	</target>
-	
-	<target name="coverage" depends="runTests">
-		<report srcdir="${src.dir}" destdir="${doc.dir}/coverage">
-			<classpath>
-				<pathelement path="${tls.dir}/coverage-report/jcoverage.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/log4j/log4j-1.2.8.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/bcel/bcel-5.1.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/oro/oro-2.0.7.jar"/>
-				<pathelement path="${tls.dir}/coverage-report/getopt/getopt-1.0.9.jar"/>
-			</classpath>
-		</report>
+	<target name="distribute" depends="jar, zip">
 	</target>
 </project>

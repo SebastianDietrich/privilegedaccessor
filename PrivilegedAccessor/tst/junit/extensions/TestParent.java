@@ -30,13 +30,15 @@ public class TestParent {
     }
 
     public boolean equals(Object other) {
-        if (!(other instanceof TestParent))
+        if (!(other instanceof TestParent)) {
             return false;
+        }
 
         TestParent otherTestParent = (TestParent) other;
 
-        if (this.privateName.equals(otherTestParent.privateName))
+        if (this.privateName.equals(otherTestParent.privateName)) {
             return true;
+        }
 
         return false;
     }
