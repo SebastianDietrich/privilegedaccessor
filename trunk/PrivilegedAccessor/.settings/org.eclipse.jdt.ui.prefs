@@ -1,0 +1,15 @@
+#Tue Jan 18 10:29:27 CET 2005
+comment_format_source_code=true
+org.eclipse.jdt.ui.ignorelowercasenames=true
+comment_new_line_for_parameter=true
+org.eclipse.jdt.ui.ondemandthreshold=20
+comment_format_html=true
+org.eclipse.jdt.ui.importorder=java;javax;org;com;
+comment_line_length=80
+comment_format_header=false
+eclipse.preferences.version=1
+comment_format_comments=true
+comment_indent_parameter_description=true
+comment_clear_blank_lines=false
+comment_separate_root_tags=true
+comment_indent_root_tags=true
