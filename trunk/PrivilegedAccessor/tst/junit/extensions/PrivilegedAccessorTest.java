@@ -318,7 +318,7 @@ public class PrivilegedAccessorTest extends TestCase {
         assertEquals(new Integer(3), PA.getValue(TestParent.class,
                 "privateStaticNumber"));
     }
-
+    
     public void testInvokeMethodWithMoreThanOnePrimitive() throws Exception {
         PA.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)",
                 new Integer[] { new Integer(5), new Integer(3) });
