@@ -25,84 +25,45 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, Object)
+     * @see junit.extensions.PrivilegedAccessor.instantiate(Class)
      */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final Object value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    public static Object instantiate(final Class fromClass)
+    throws IllegalArgumentException, InstantiationException,
+    IllegalAccessException, InvocationTargetException,
+    NoSuchMethodException {
+        return PrivilegedAccessor.instantiate(fromClass);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, int)
+     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Class[], Object[])
      */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final int value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    public static Object instantiate(final Class fromClass,
+            final Class[] argumentTypes, final Object[] args)
+    throws IllegalArgumentException, InstantiationException,
+            IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+        return PrivilegedAccessor.instantiate(fromClass, argumentTypes, args);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, short)
+     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object)
      */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final short value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    public static Object instantiate(final Class fromClass,
+            final Object argument)
+    throws IllegalArgumentException, InstantiationException,
+            IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+        return PrivilegedAccessor.instantiate(fromClass, argument);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, byte)
+     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object[])
      */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final byte value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, long)
-     */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final long value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, char)
-     */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final char value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, float)
-     */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final float value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, double)
-     */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final double value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, boolean)
-     */
-    public static void setValue(final Object instanceOrClass,
-            final String fieldName, final boolean value)
-    throws NoSuchFieldException {
-        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    public static Object instantiate(final Class fromClass, final Object[] args)
+    throws IllegalArgumentException, InstantiationException,
+            IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+        return PrivilegedAccessor.instantiate(fromClass, args);
     }
 
     /**
@@ -116,50 +77,10 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, Object)
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, boolean)
      */
     public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final Object arg)
-    throws IllegalArgumentException, IllegalAccessException,
-    InvocationTargetException, NoSuchMethodException {
-        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, int)
-     */
-    public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final int arg)
-    throws IllegalArgumentException, IllegalAccessException,
-    InvocationTargetException, NoSuchMethodException {
-        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, float)
-     */
-    public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final float arg)
-    throws IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException {
-        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, double)
-     */
-    public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final double arg)
-    throws IllegalArgumentException, IllegalAccessException,
-    InvocationTargetException, NoSuchMethodException {
-        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
-    }
-
-    /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, short)
-     */
-    public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final short arg)
+            final String methodSignature, final boolean arg)
     throws IllegalArgumentException, IllegalAccessException,
     InvocationTargetException, NoSuchMethodException {
         return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
@@ -186,10 +107,30 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, boolean)
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, double)
      */
     public static Object invokeMethod(final Object instanceOrClass,
-            final String methodSignature, final boolean arg)
+            final String methodSignature, final double arg)
+    throws IllegalArgumentException, IllegalAccessException,
+    InvocationTargetException, NoSuchMethodException {
+        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, float)
+     */
+    public static Object invokeMethod(final Object instanceOrClass,
+            final String methodSignature, final float arg)
+    throws IllegalArgumentException, IllegalAccessException,
+            InvocationTargetException, NoSuchMethodException {
+        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, int)
+     */
+    public static Object invokeMethod(final Object instanceOrClass,
+            final String methodSignature, final int arg)
     throws IllegalArgumentException, IllegalAccessException,
     InvocationTargetException, NoSuchMethodException {
         return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
@@ -206,6 +147,16 @@ public final class PA {
     }
 
     /**
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, Object)
+     */
+    public static Object invokeMethod(final Object instanceOrClass,
+            final String methodSignature, final Object arg)
+    throws IllegalArgumentException, IllegalAccessException,
+    InvocationTargetException, NoSuchMethodException {
+        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
+    }
+
+    /**
      * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, Object[])
      */
     public static Object invokeMethod(final Object instanceOrClass,
@@ -216,44 +167,93 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class)
+     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, short)
      */
-    public static Object instantiate(final Class fromClass)
-    throws IllegalArgumentException, InstantiationException,
-    IllegalAccessException, InvocationTargetException,
-    NoSuchMethodException {
-        return PrivilegedAccessor.instantiate(fromClass);
+    public static Object invokeMethod(final Object instanceOrClass,
+            final String methodSignature, final short arg)
+    throws IllegalArgumentException, IllegalAccessException,
+    InvocationTargetException, NoSuchMethodException {
+        return PrivilegedAccessor.invokeMethod(instanceOrClass, methodSignature, arg);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object)
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, boolean)
      */
-    public static Object instantiate(final Class fromClass,
-            final Object argument)
-    throws IllegalArgumentException, InstantiationException,
-            IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
-        return PrivilegedAccessor.instantiate(fromClass, argument);
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final boolean value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object[])
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, byte)
      */
-    public static Object instantiate(final Class fromClass, final Object[] args)
-    throws IllegalArgumentException, InstantiationException,
-            IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
-        return PrivilegedAccessor.instantiate(fromClass, args);
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final byte value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Class[], Object[])
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, char)
      */
-    public static Object instantiate(final Class fromClass,
-            final Class[] argumentTypes, final Object[] args)
-    throws IllegalArgumentException, InstantiationException,
-            IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
-        return PrivilegedAccessor.instantiate(fromClass, argumentTypes, args);
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final char value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, double)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final double value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, float)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final float value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, int)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final int value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, long)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final long value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, Object)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final Object value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+    }
+
+    /**
+     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, short)
+     */
+    public static void setValue(final Object instanceOrClass,
+            final String fieldName, final short value)
+    throws NoSuchFieldException {
+        PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
     }
 }
