@@ -894,7 +894,7 @@ public final class PrivilegedAccessor {
      * @return the parameter types as a string
      */
     private static String getParameterTypesAsString(final Class[] classTypes) {
-        if (classTypes == null) {
+        if (classTypes == null || classTypes.length == 0) {
             return "";
         }
 
