@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.StringTokenizer;
 
 /**
  * This class is used to access a method or field of an object no matter what
@@ -31,7 +32,7 @@ public final class PrivilegedAccessor {
      * Private constructor to make it impossible to instantiate this class
      */
     private PrivilegedAccessor() {
-        assert false; //should never be called
+        throw new Error("Assertion failed"); //should never be called
     }
 
     /**
@@ -49,9 +50,8 @@ public final class PrivilegedAccessor {
         try {
             return field.get(instanceOrClass);
         } catch (IllegalAccessException e) {
-            assert false; // would mean that setAccessible(true) didn't work
+            throw new Error("Assertion failed"); // would mean that setAccessible(true) didn't work
         }
-        return null;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class PrivilegedAccessor {
         try {
             field.set(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -92,7 +92,7 @@ public final class PrivilegedAccessor {
         try {
             field.setInt(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -113,7 +113,7 @@ public final class PrivilegedAccessor {
         try {
             field.setShort(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -134,7 +134,7 @@ public final class PrivilegedAccessor {
         try {
             field.setByte(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -156,7 +156,7 @@ public final class PrivilegedAccessor {
         try {
             field.setLong(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -177,7 +177,7 @@ public final class PrivilegedAccessor {
         try {
             field.setChar(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -198,7 +198,7 @@ public final class PrivilegedAccessor {
         try {
             field.setFloat(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -219,7 +219,7 @@ public final class PrivilegedAccessor {
         try {
             field.setDouble(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -240,7 +240,7 @@ public final class PrivilegedAccessor {
         try {
             field.setBoolean(instanceOrClass, value);
         } catch (IllegalAccessException e) {
-            assert false; //would mean that setAccessible didn't work
+            throw new Error("Assertion failed"); //would mean that setAccessible didn't work
         }
     }
 
@@ -701,7 +701,7 @@ public final class PrivilegedAccessor {
      * Instantiates an object of the given class with the given arguments and
      * the given argument types
      *
-     * @param type the class to instantiate an object from
+     * @param fromClass the class to instantiate an object from
      * @param args the arguments to pass to the constructor
      * @param argumentTypes the types of the arguments of the constructor
      * @return an null of the given type
@@ -721,12 +721,12 @@ public final class PrivilegedAccessor {
      *
      * @see PrivilegedAccessor#invokeMethod(Object,String,Object)
      */
-    public static Object instantiate(final Class type,
+    public static Object instantiate(final Class fromClass,
             final Class[] argumentTypes, final Object[] args)
     throws IllegalArgumentException, InstantiationException,
             IllegalAccessException, InvocationTargetException,
             NoSuchMethodException {
-        return getConstructor(type, argumentTypes).newInstance(args);
+        return getConstructor(fromClass, argumentTypes).newInstance(args);
     }
 
     /**
@@ -752,7 +752,7 @@ public final class PrivilegedAccessor {
      * Gets the types of the given parameters. If the parameters
      * don't match the given methodSignature an IllegalArgumentException
      * is thrown.
-     * 
+     *
      * @param methodSignature the signature of the method
      * @param parameters the arguments of the method
      * @return the parameter types as class[]
@@ -772,7 +772,8 @@ public final class PrivilegedAccessor {
                 continue;
             }
             throw new IllegalArgumentException("Method '" + methodSignature
-                    + "'s parameter nr" + i + " (" + typesOfParameters[i].getName()
+                    + "'s parameter nr" + i
+                    + " (" + typesOfParameters[i].getName()
                     + ") does not math argument type ("
                     + parameters.getClass().getName() + ")");
         }
@@ -790,39 +791,52 @@ public final class PrivilegedAccessor {
      */
     private static Class[] getTypesInSignature(final String methodSignature)
     throws NoSuchMethodException {
-        String[] typeNames = null;
-        try {
-            typeNames = methodSignature.substring(
-                methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'))
-                .split(", *");
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new NoSuchMethodException("Method '" + methodSignature
-                    + "' has no brackets");
-        }
+        String signature = getSignatureWithoutBraces(methodSignature);
 
-        Class[] typesInSignature = new Class[typeNames.length];
+        StringTokenizer tokenizer = new StringTokenizer(signature, ", *");
+        Class[] typesInSignature = new Class[tokenizer.countTokens()];
 
-        for (int i = 0; i < typeNames.length; i++) {
+        for (int x = 0; tokenizer.hasMoreTokens(); x++) {
+            String className = tokenizer.nextToken();
             try {
-                typesInSignature[i] = getClassForName(typeNames[i]);
+                typesInSignature[x] = getClassForName(className);
             } catch (ClassNotFoundException e) {
                 throw new NoSuchMethodException("Method '" + methodSignature
-                        + "'s parameter nr" + i + " (" + typeNames[i]
+                        + "'s parameter nr" + (x + 1) + " (" + className
                         + ") not found");
             }
         }
+
         return typesInSignature;
     }
 
     /**
+     * Removes the braces around the methods signature.
+     *
+     * @param methodSignature the signature with braces
+     * @return the signature without braces
+     * @throws NoSuchMethodException if the method has no braces defined
+     */
+    private static String getSignatureWithoutBraces(final String methodSignature)
+    throws NoSuchMethodException {
+        try {
+            return methodSignature.substring(methodSignature.indexOf('(') + 1,
+                    methodSignature.indexOf(')'));
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new NoSuchMethodException("Method '" + methodSignature
+                    + "' has no brackets");
+        }
+    }
+
+    /**
      * Tests if the given primitive is the primitive form for the given class
-     * 
+     *
      * @param primitive the primitive to test
      * @param type the type to check if the primitive corresponds to
-     * 
+     *
      * @return true if the primitive matches the given type, otherwise false
      */
-    private static boolean isPrimitiveForm(Class primitive, Class type) {
+    private static boolean isPrimitiveForm(final Class primitive, final Class type) {
         if (primitive  == Integer.TYPE && type == Integer.class) {
             return true;
         }
