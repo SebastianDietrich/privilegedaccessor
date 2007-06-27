@@ -3,17 +3,17 @@ package junit.extensions;
 import junit.framework.TestCase;
 
 /**
- * Tests for the class <code>PrivilegedAccessor</code>
+ * Tests for the class <code>PrivilegedAccessor</code>.
  */
 public class PrivilegedAccessorTest extends TestCase {
 
     /**
-     * an instance of a test-subclass
+     * An instance of a test-subclass.
      */
     private TestChild child;
 
     /**
-     * an instance of a test-subclass in a variable of type superclass
+     * An instance of a test-subclass in a variable of type superclass.
      */
     private TestParent childInParent;
     /**
@@ -23,7 +23,7 @@ public class PrivilegedAccessorTest extends TestCase {
 
     /**
      * Constructor for this test.
-     * 
+     *
      * @param name
      * @deprecated only necessary for junit prior to 3.8.1
      */
@@ -32,8 +32,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * The main test-method
-     * 
+     * The main test-method.
+     *
      * @param unused not used
      */
     public static void main(final String[] unused) {
@@ -41,8 +41,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * sets up the test-environment by instantiating the test-instances
-     * 
+     * Sets up the test-environment by instantiating the test-instances.
+     *
      * @see junit.framework.TestCase#setUp()
      */
     public final void setUp() {
@@ -52,8 +52,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tears down the test-environment by deleting the test-instances
-     * 
+     * Tears down the test-environment by deleting the test-instances.
+     *
      * @see junit.framework.TestCase#tearDown()
      */
     public final void tearDown() {
@@ -61,9 +61,9 @@ public class PrivilegedAccessorTest extends TestCase {
         this.child = null;
         this.childInParent = null;
     }
-    
+
     /**
-     * tests the method <code>getValue</code>
+     * Tests the method <code>getValue</code>.
      *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
@@ -80,8 +80,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>getValue</code> with a static field
-     * 
+     * Tests the method <code>getValue</code> with a static field.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
      */
@@ -93,8 +93,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>getValue</code> with a non-existing field
-     * 
+     * Tests the method <code>getValue</code> with a non-existing field.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#getValue(Object, String)
      */
@@ -127,10 +127,10 @@ public class PrivilegedAccessorTest extends TestCase {
             // that is what we expect
         }
     }
-    
+
     /**
-     * tests the method <code>instantiate</code>
-     * 
+     * Tests the method <code>instantiate</code>.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#instantiate(Class)
      */
@@ -144,7 +144,7 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * Tests the constructor of PA and PrivilegedAccessor
+     * Tests the constructor of PA and PrivilegedAccessor.
      *
      * @throws Exception if something went wrong
      */
@@ -165,8 +165,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>invokeMethod</code>
-     * 
+     * Tests the method <code>invokeMethod</code>.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
      */
@@ -176,7 +176,7 @@ public class PrivilegedAccessorTest extends TestCase {
 
         PA.invokeMethod(this.parent, "setName(java.lang.String)", null);
         assertEquals(null, PA.getValue(this.parent, "privateName"));
-        
+
         PA.invokeMethod(this.child, "setName(java.lang.String)", "Herbert");
         assertEquals("Herbert", PA.getValue(this.child, "privateName"),
                 "Herbert");
@@ -193,8 +193,44 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>invokeMethod</code> on a non-existing method
-     * 
+     * Tests the method <code>invokeMethod</code> with different primitives.
+     *
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
+    public void testInvokeMethodWithPrimitives() throws Exception {
+        PA.invokeMethod(this.child, "setNumber(int)", 3);
+        assertEquals(new Integer(3), PA.invokeMethod(this.child, "getNumber()"));
+
+        PA.invokeMethod(this.child, "setPrivateLong(long)", 3L);
+        assertEquals(new Long(3), PA.invokeMethod(this.child, "getPrivateLong()"));
+
+        PA.invokeMethod(this.child, "setPrivateShort(short)", (short)3);
+        assertEquals(new Short((short)3), PA.invokeMethod(this.child, "getPrivateShort()"));
+
+        PA.invokeMethod(this.child, "setPrivateByte(byte)", (byte)3);
+        assertEquals(new Byte((byte)3), PA.invokeMethod(this.child, "getPrivateByte()"));
+
+        PA.invokeMethod(this.child, "setPrivateBoolean(boolean)", true);
+        assertEquals(new Boolean(true), PA.invokeMethod(this.child, "getPrivateBoolean()"));
+
+        PA.invokeMethod(this.child, "setPrivateChar(char)", 'A');
+        assertEquals(new Character('A'), PA.invokeMethod(this.child, "getPrivateChar()"));
+
+        PA.invokeMethod(this.child, "setPrivateFloat(float)", 3.1f);
+        assertEquals(new Float(3.1), PA.invokeMethod(this.child, "getPrivateFloat()"));
+
+        PA.invokeMethod(this.child, "setPrivateDouble(double)", 3.1);
+        assertEquals(new Double(3.1), PA.invokeMethod(this.child, "getPrivateDouble()"));
+
+        PA.invokeMethod(this.child, "setNumber(int)", 3);
+        assertEquals(new Integer(3), PA.invokeMethod(this.child, "getNumber()"));
+
+    }
+
+    /**
+     * Tests the method <code>invokeMethod</code> on a non-existing method.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
      */
@@ -212,7 +248,7 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (NoSuchMethodException e) {
             // that is what we expect
         }
-        
+
         try {
             PA.invokeMethod(this.child, "noSuchMethod()", "Herbert");
             fail("should throw NoSuchMethodException");
@@ -241,7 +277,7 @@ public class PrivilegedAccessorTest extends TestCase {
             // that is what we expect
         }
     }
-    
+
     public void testInvokeMethodWithArray() throws Exception {
         Object[] args = { new Integer(5) };
         PA.invokeMethod(this.childInParent, "setNumber(int)", args);
@@ -250,8 +286,45 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>invokeMethod</code> with invalid arguments
-     * 
+     * Tests the method <code>invokeMethod</code> with invalid arguments.
+     *
+     * @throws Exception
+     * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
+     */
+    public void testInvokeMethodWithInvalidSignature() throws Exception {
+        try {
+            PA.invokeMethod(this.child, "setName", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            // that is what we expect - since the signature is missing
+        }
+
+        try {
+            PA.invokeMethod(this.child, "setName java.lang.String)", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            // that is what we expect - since the first brace is missing
+        }
+
+        try {
+            PA.invokeMethod(this.child, "setName(java.lang.String", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            // that is what we expect - since the last brace is missing
+        }
+
+        try {
+            PA.invokeMethod(this.child, "setName(java.lang.SString)", "Herbert");
+            fail("should throw NoSuchMethodException");
+        } catch (NoSuchMethodException e) {
+            // that is what we expect - since the signature denotes a non-existing class
+        }
+
+    }
+        
+    /**
+     * Tests the method <code>invokeMethod</code> with invalid arguments.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
      */
@@ -262,14 +335,14 @@ public class PrivilegedAccessorTest extends TestCase {
         } catch (NoSuchMethodException e) {
             // that is what we expect
         }
-        
+
         try {
             PA.invokeMethod(this.child, "setData(non.existing.package.NonExistingClass)", "Herbert");
             fail("should throw NoSuchMethodException");
         } catch (NoSuchMethodException e) {
             // that is what we expect
         }
-        
+
         try {
             PA.invokeMethod(this.child, "setData()");
             fail("should throw NoSuchMethodException");
@@ -316,12 +389,12 @@ public class PrivilegedAccessorTest extends TestCase {
             // that is what we expect
         }
     }
-    
+
     public void testInvokeMethodWithMoreThanOnePrimitive() throws Exception {
         PA.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)",
                 new Integer[] { new Integer(5), new Integer(3) });
         assertEquals(new Integer(8), PA.getValue(this.child, "privateNumber"));
-        
+
         PA.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)",
                 new Object[] { new Integer(5), new Integer(3) });
         assertEquals(new Integer(8), PA.getValue(this.child, "privateNumber"));
@@ -333,7 +406,7 @@ public class PrivilegedAccessorTest extends TestCase {
                 "setData(java.lang.String, int)", args);
         assertEquals("Marcus", PA.getValue(this.child, "privateName"));
         assertEquals(new Integer(5), PA.getValue(this.child, "privateNumber"));
-        
+
         PA.invokeMethod(this.childInParent,
                 "setData(java.lang.String, int)", args);
         assertEquals("Marcus", PA.getValue(this.childInParent, "privateName"));
@@ -342,8 +415,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>invokeMethod</code> on a static method
-     * 
+     * Tests the method <code>invokeMethod</code> on a static method.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#invokeMethod(Object, String, Object)
      */
@@ -354,8 +427,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>setValue</code>
-     * 
+     * Tests the method <code>setValue</code>.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
      */
@@ -377,8 +450,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>setValue</code> with a static field
-     * 
+     * Tests the method <code>setValue</code> with a static field.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
      */
@@ -393,8 +466,8 @@ public class PrivilegedAccessorTest extends TestCase {
     }
 
     /**
-     * tests the method <code>setValue</code> with a non-existing field
-     * 
+     * Tests the method <code>setValue</code> with a non-existing field.
+     *
      * @throws Exception
      * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, String)
      */

@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class PA {
     /**
-     * Private constructor to make it impossible to instantiate this class
+     * Private constructor to make it impossible to instantiate this class.
      */
     private PA() {
         throw new Error("Assertion failed"); //should never be called
