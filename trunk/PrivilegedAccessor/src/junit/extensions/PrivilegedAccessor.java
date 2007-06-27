@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
  * a.k.a. The "ObjectMolester"
  * <p>
  * Here is an example of using this to access a private member: <br>
- * <code>myObject<code> is an object of type <code>MyClass<code>.
+ * <code>myObject</code> is an object of type <code>MyClass</code>.
  * <code>setName(String)</code> is a private method of <code>MyClass</code>.
  *
  * <pre>
@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
  */
 public final class PrivilegedAccessor {
     /**
-     * Private constructor to make it impossible to instantiate this class
+     * Private constructor to make it impossible to instantiate this class.
      */
     private PrivilegedAccessor() {
         throw new Error("Assertion failed"); //should never be called
@@ -85,7 +85,7 @@ public final class PrivilegedAccessor {
 
     /**
      * Instantiates an object of the given class with the given arguments and
-     * the given argument types
+     * the given argument types.
      *
      * @param fromClass the class to instantiate an object from
      * @param args the arguments to pass to the constructor
@@ -452,10 +452,10 @@ public final class PrivilegedAccessor {
             return invokeMethod(instanceOrClass, methodSignature,
                     new Object[] {null});
         }
-        
+
         return getMethod(instanceOrClass, getMethodName(methodSignature),
                 getParameterTypes(methodSignature, arguments)).
-                invoke(instanceOrClass,arguments);
+                invoke(instanceOrClass, arguments);
     }
 
     /**
@@ -677,7 +677,7 @@ public final class PrivilegedAccessor {
     }
 
     /**
-     * Gets the class with the given className
+     * Gets the class with the given className.
      *
      * @param className the name of the class to get
      * @return the class for the given className
@@ -717,7 +717,7 @@ public final class PrivilegedAccessor {
     }
 
     /**
-     * gets the constructor for a given class with the given parameters
+     * Gets the constructor for a given class with the given parameters.
      *
      * @param type the class to instantiate
      * @param parameterTypes the types of the parameters
@@ -816,13 +816,12 @@ public final class PrivilegedAccessor {
     }
 
     /**
-     * Gets the name of a method
+     * Gets the name of a method.
      *
      * @param methodSignature the signature of the method
      * @return the name of the method
-     * @throws NoSuchMethodException if no method with the giveb
-     *                               <code>methodSignature</code>
-     *                               could exist
+     * @throws NoSuchMethodException if no method with the given
+     *         <code>methodSignature</code> exists.
      */
     private static String getMethodName(final String methodSignature)
     throws NoSuchMethodException {
@@ -831,13 +830,17 @@ public final class PrivilegedAccessor {
                     + "' must have brackets");
         }
 
-        String methodName = methodSignature.substring(0,
-                methodSignature.indexOf('(')).trim();
-        return methodName;
+        try {
+            return methodSignature.substring(0,
+                    methodSignature.indexOf('(')).trim();
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new NoSuchMethodException("Method '" + methodSignature
+                    + "' must have brackets");
+        }
     }
 
     /**
-     * Gets the types of the parameters
+     * Gets the types of the parameters.
      *
      * @param parameters the parameters
      * @return the class-types of the arguments
@@ -888,7 +891,7 @@ public final class PrivilegedAccessor {
     }
 
     /**
-     * Gets the parameter types as a string
+     * Gets the parameter types as a string.
      *
      * @param classTypes the types to get as names
      * @return the parameter types as a string
@@ -961,7 +964,7 @@ public final class PrivilegedAccessor {
     }
 
     /**
-     * Tests if the given primitive is the primitive form for the given class
+     * Tests if the given primitive is the primitive form for the given class.
      *
      * @param primitive the primitive to test
      * @param type the type to check if the primitive corresponds to
