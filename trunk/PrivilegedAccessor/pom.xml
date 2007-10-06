@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<scm>
+		<connection>
+			scm:cvs:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
+		</connection>
+		<developerConnection>
+			scm:svn:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
+		</developerConnection>
+	</scm>
+
+	<repositories>
+	
+	 	<repository>
+			<id>ibiblio-repository</id>
+			<name>Ibiblio Repository</name>
+			<url>http://www.ibiblio.org/maven2</url>
+		</repository>
+
+		<repository>
+			<id>codehaus-repository</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+
+		<repository>
+			<id>apache-snapshot-repository</id>
+			<name>Apache Snapshot Repository</name>
+			<url>
+				http://people.apache.org/maven-snapshot-repository/
+			</url>
+		</repository>
+
+	</repositories>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>junit.extensions</groupId>
+	<artifactId>PrivilegedAccessor</artifactId>
+	<version>1.02</version>
+	<name>PrivilegedAccessor</name>
+	<description>
+		gives privileged access to private methods and attributes
+	</description>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly-descriptor.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.2</version>
+		</dependency>
+	</dependencies>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
