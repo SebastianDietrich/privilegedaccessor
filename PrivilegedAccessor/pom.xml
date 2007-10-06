@@ -3,39 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<scm>
-		<connection>
-			scm:cvs:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
-		</connection>
-		<developerConnection>
-			scm:svn:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
-		</developerConnection>
-	</scm>
-
-	<repositories>
-	
-	 	<repository>
-			<id>ibiblio-repository</id>
-			<name>Ibiblio Repository</name>
-			<url>http://www.ibiblio.org/maven2</url>
-		</repository>
-
-		<repository>
-			<id>codehaus-repository</id>
-			<name>Codehaus Repository</name>
-			<url>http://repository.codehaus.org</url>
-		</repository>
-
-		<repository>
-			<id>apache-snapshot-repository</id>
-			<name>Apache Snapshot Repository</name>
-			<url>
-				http://people.apache.org/maven-snapshot-repository/
-			</url>
-		</repository>
-
-	</repositories>
-
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>junit.extensions</groupId>
@@ -45,8 +12,46 @@
 	<description>
 		gives privileged access to private methods and attributes
 	</description>
+	<url>http://maven.apache.org</url>
 	<packaging>jar</packaging>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+  
+	<scm>
+	    <url>http://sourceforge.net/projects/privaccessor/</url>
+		<connection>
+			scm:cvs:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
+		</connection>
+		<developerConnection>
+			scm:svn:privaccessor.cvs.sourceforge.net/cvsroot/privaccessor
+		</developerConnection>
+	</scm>
 
+	<repositories>
+	 	<repository>
+			<id>ibiblio-repository</id>
+			<name>Ibiblio Repository</name>
+			<url>http://www.ibiblio.org/maven2</url>
+		</repository>
+		<repository>
+			<id>codehaus-repository</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+		<repository>
+			<id>apache-snapshot-repository</id>
+			<name>Apache Snapshot Repository</name>
+			<url>
+				http://people.apache.org/maven-snapshot-repository/
+			</url>
+		</repository>
+	</repositories>
+	
 	<build>
 		<plugins>
 			<plugin>
