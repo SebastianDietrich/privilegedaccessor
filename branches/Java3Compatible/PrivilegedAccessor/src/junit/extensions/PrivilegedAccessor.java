@@ -1,9 +1,13 @@
 package junit.extensions;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 /**
@@ -36,6 +40,56 @@ public final class PrivilegedAccessor {
     }
 
     /**
+     * Gets the name of all fields (public, private, protected, default) of the given instance or class.
+     * This includes as well all fields (public, private, protected, default) of all its super classes.
+     * 
+     * @param instanceOrClass the instance or class to get the fields of
+     * @return the collection of field names of the given instance or class
+     */
+    public static Collection getFieldNames(final Object instanceOrClass) {
+        if (instanceOrClass == null) {
+            return new ArrayList();
+        }
+        
+        Class clazz = getClass(instanceOrClass);
+        Field[] fields = clazz.getDeclaredFields();
+        Collection fieldNames = new ArrayList(fields.length);
+        
+        for (int x=0; x<fields.length; x++) {
+            fieldNames.add(fields[x].getName());
+        }
+        fieldNames.addAll(getFieldNames (clazz.getSuperclass()));
+        
+        return fieldNames;
+    }
+    
+    /**
+     * Gets the signatures of all methods (public, private, protected, default) of the given instance or class.
+     * This includes as well all methods (public, private, protected, default) of all its super classes.
+     * This does not include constructors.
+     * 
+     * @param instanceOrClass the instance or class to get the method signatures of
+     * @return the collection of method signatures of the given instance or class
+     */
+    public static Collection getMethodSignatures(final Object instanceOrClass) {
+        if (instanceOrClass == null) {
+            return new ArrayList();
+        }
+        
+        Class clazz = getClass(instanceOrClass);
+        Method[] methods = clazz.getDeclaredMethods();
+        Collection methodSignatures = new ArrayList(methods.length + Object.class.getDeclaredMethods().length);
+        
+        for (int x=0; x<methods.length; x++) {
+            Method method = methods[x];
+            methodSignatures.add(method.getName() + "(" + getParameterTypesAsString(method.getParameterTypes()) + ")");
+        }
+        methodSignatures.addAll(getMethodSignatures (clazz.getSuperclass()));
+        
+        return methodSignatures;
+    }
+    
+    /**
      * Gets the value of the named field and returns it as an object.
      * If instanceOrClass is a class then a static field is returned.
      *
@@ -53,44 +107,17 @@ public final class PrivilegedAccessor {
             throw new Error("Assertion failed"); // would mean that setAccessible(true) didn't work
         }
     }
-
-    /**
-     * Instantiates an object of the given class without parameters.
-     * e.g. instantiate(String.class);
-     *
-     * @param fromClass the class to instantiate an object from
-     * @return the newly created null
-     * @throws IllegalArgumentException if the number of actual and formal
-     *         parameters differ; if an unwrapping conversion for primitive
-     *         arguments fails; or if, after possible unwrapping, a parameter
-     *         value cannot be converted to the corresponding formal parameter
-     *         type by a method invocation conversion.
-     * @throws IllegalAccessException if this Constructor object enforces Java
-     *         language access control and the underlying constructor is
-     *         inaccessible.
-     * @throws InvocationTargetException if the underlying constructor throws
-     *         an exception.
-     * @throws NoSuchMethodException if the constructor could not be found
-     * @throws InstantiationException if the class that declares the underlying
-     *         constructor represents an abstract class.
-     *
-     * @see PrivilegedAccessor#instantiate(Class,Object)
-     */
-    public static Object instantiate(final Class fromClass)
-    throws IllegalArgumentException, InstantiationException,
-    IllegalAccessException, InvocationTargetException,
-    NoSuchMethodException {
-        return instantiate(fromClass, null);
-    }
-
+    
     /**
      * Instantiates an object of the given class with the given arguments and
      * the given argument types.
+     * If you want to instantiate a member class, you must provide the object
+     * it is a member of as first argument.
      *
      * @param fromClass the class to instantiate an object from
      * @param args the arguments to pass to the constructor
      * @param argumentTypes the types of the arguments of the constructor
-     * @return an null of the given type
+     * @return an object of the given type
      * @throws IllegalArgumentException if the number of actual and formal
      *         parameters differ; if an unwrapping conversion for primitive
      *         arguments fails; or if, after possible unwrapping, a parameter
@@ -150,10 +177,12 @@ public final class PrivilegedAccessor {
 
     /**
      * Instantiates an object of the given class with the given arguments.
+     * If you want to instantiate a member class, you must provide the object
+     * it is a member of as first argument.
      *
      * @param fromClass the class to instantiate an object from
      * @param args the arguments to pass to the constructor
-     * @return an null of the given type
+     * @return an object of the given type
      * @throws IllegalArgumentException if the number of actual and formal
      *         parameters differ; if an unwrapping conversion for primitive
      *         arguments fails; or if, after possible unwrapping, a parameter
@@ -442,19 +471,13 @@ public final class PrivilegedAccessor {
      *                               found
      * @throws IllegalArgumentException if an argument couldn't be converted to
      *                                  match the expected type
-     * @see PrivilegedAccessor#invokeMethod(Class,String,Object[])
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final Object[] arguments)
     throws IllegalArgumentException, IllegalAccessException,
     InvocationTargetException, NoSuchMethodException {
-        if (arguments == null) {
-            return invokeMethod(instanceOrClass, methodSignature,
-                    new Object[] {null});
-        }
-
         return getMethod(instanceOrClass, getMethodName(methodSignature),
-                getParameterTypes(methodSignature, arguments)).
+                getParameterTypes(methodSignature)).
                 invoke(instanceOrClass, arguments);
     }
 
@@ -685,6 +708,12 @@ public final class PrivilegedAccessor {
      */
     private static Class getClassForName(final String className)
             throws ClassNotFoundException {
+
+        if (className.indexOf('[') > -1) {
+            Class clazz = getClassForName(className.substring(0, className.indexOf('[')));
+            return Array.newInstance(clazz, 0).getClass();
+        }
+        
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
@@ -740,28 +769,42 @@ public final class PrivilegedAccessor {
      * @param fieldName the name of the field to get
      * @return the field
      * @throws NoSuchFieldException if no such field can be found
+     * @throws InvalidParameterException if instanceOrClass was null
      */
     private static Field getField(final Object instanceOrClass,
             final String fieldName)
-    throws NoSuchFieldException {
+    throws NoSuchFieldException, InvalidParameterException {
         if (instanceOrClass == null) {
-            throw new NoSuchFieldException("Invalid field : " + fieldName);
+            throw new InvalidParameterException("Can't get field on null object/class");
         }
 
-        Class type = null;
-        if (instanceOrClass instanceof Class) {
-            type = (Class) instanceOrClass;
-        } else {
-            type = instanceOrClass.getClass();
-        }
+        Class type = getClass(instanceOrClass);
 
         try {
             Field field = type.getDeclaredField(fieldName);
             field.setAccessible(true);
             return field;
         } catch (NoSuchFieldException e) {
+            if (type.getSuperclass() == null) {
+                throw new NoSuchFieldException("No such field '" + fieldName + "'");
+            }
             return getField(type.getSuperclass(), fieldName);
         }
+    }
+
+    /**
+     * Gets the class of the given parameter. If the parameter is a class,
+     * it is returned, if it is an object, its class is returned
+     * 
+     * @param instanceOrClass the instance or class to get the class of
+     * @return the class of the given parameter
+     */
+    private static Class getClass(final Object instanceOrClass) {
+        if (instanceOrClass instanceof Class) {
+            return (Class) instanceOrClass;
+        }
+        
+        return instanceOrClass.getClass();
     }
 
     /**
@@ -804,11 +847,7 @@ public final class PrivilegedAccessor {
     throws NoSuchMethodException {
         Class type;
 
-        if (instanceOrClass instanceof Class) {
-            type = (Class) instanceOrClass;
-        } else {
-            type = instanceOrClass.getClass();
-        }
+        type = getClass(instanceOrClass);
 
         Method accessMethod = getMethod(type, methodName, parameterTypes);
         accessMethod.setAccessible(true);
@@ -864,30 +903,28 @@ public final class PrivilegedAccessor {
      * is thrown.
      *
      * @param methodSignature the signature of the method
-     * @param parameters the arguments of the method
      * @return the parameter types as class[]
      * @throws NoSuchMethodException if the method could not be found
      * @throws IllegalArgumentException if one of the given parameters
      *                                  doesn't math the given methodSignature
      */
-    private static Class[] getParameterTypes(final String methodSignature,
-            final Object[] parameters)
+    private static Class[] getParameterTypes(final String methodSignature)
     throws NoSuchMethodException, IllegalArgumentException {
-        Class[] typesOfParameters = getTypesInSignature(methodSignature);
-
-        for (int i = 0; i < typesOfParameters.length; i++) {
-            if (parameters[i] == null
-                || typesOfParameters[i].isAssignableFrom(parameters[i].getClass())
-                || isPrimitiveForm(typesOfParameters[i], parameters[i].getClass())) {
-                continue;
+        String signature = getSignatureWithoutBraces(methodSignature);
+        
+        StringTokenizer tokenizer = new StringTokenizer(signature, ", *");
+        Class[] typesInSignature = new Class[tokenizer.countTokens()];
+        
+        for (int x = 0; tokenizer.hasMoreTokens(); x++) {
+            String className = tokenizer.nextToken();
+            try {
+                typesInSignature[x] = getClassForName(className);
+            } catch (ClassNotFoundException e) {
+                throw new NoSuchMethodException("Method '" + methodSignature
+                        + "' not found");
             }
-            throw new IllegalArgumentException("Method '" + methodSignature
-                    + "'s parameter nr" + i
-                    + " (" + typesOfParameters[i].getName()
-                    + ") does not math argument type ("
-                    + parameters.getClass().getName() + ")");
         }
-        return typesOfParameters;
+        return typesInSignature;
     }
 
     /**
@@ -904,15 +941,11 @@ public final class PrivilegedAccessor {
         String parameterTypes = "";
         for (int x = 0; x < classTypes.length; x++) {
             if (classTypes[x] == null) {
-                parameterTypes += "null";
-            } else {
-                parameterTypes += classTypes[x].getName();
+                throw new IllegalStateException("classTypes was null");	//would mean that there was an error in getParameterTypes
             }
-            parameterTypes += ", ";
+            parameterTypes += classTypes[x].getName() + ", ";
         }
-        parameterTypes = parameterTypes.substring(0,
-                parameterTypes.length() - 2);
-        return parameterTypes;
+        return parameterTypes.substring(0, parameterTypes.length() - 2);
     }
 
     /**

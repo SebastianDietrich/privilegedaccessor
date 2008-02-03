@@ -1,6 +1,9 @@
 package junit.extensions;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+
+import junit.extensions.PrivilegedAccessor;
 
 /**
  * This is the short named interface to the PrivilegedAccessor class.
@@ -17,6 +20,20 @@ public final class PA {
     }
 
     /**
+     * @see junit.extensions.PrivilegedAccessor.getFields(Object)
+     */
+    public static Collection getFieldNames(final Object instanceOrClass) {
+        return PrivilegedAccessor.getFieldNames(instanceOrClass);
+    }
+    
+    /**
+     * @see junit.extensions.PrivilegedAccessor.getMethodSignaturess(Object)
+     */
+    public static Collection getMethodSignatures(final Object instanceOrClass) {
+        return PrivilegedAccessor.getMethodSignatures(instanceOrClass);
+    }
+    
+    /**
      * @see junit.extensions.PrivilegedAccessor.getValue(Object, String)
      */
     public static Object getValue(final Object instanceOrClass,
@@ -31,7 +48,7 @@ public final class PA {
     throws IllegalArgumentException, InstantiationException,
     IllegalAccessException, InvocationTargetException,
     NoSuchMethodException {
-        return PrivilegedAccessor.instantiate(fromClass);
+        return PrivilegedAccessor.instantiate(fromClass, null);
     }
 
     /**
