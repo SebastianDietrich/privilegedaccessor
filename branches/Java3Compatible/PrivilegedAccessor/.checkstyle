@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fileset-config file-format-version="1.2.0" simple-config="false">
-    <fileset name="all .java files" enabled="true" check-config-name="Sun Checks" local="false">
+    <local-check-config name="Checkstyle Checks" location=".settings/checkstyle.xml" type="project" description="">
+        <additional-data name="protect-config-file" value="false"/>
+    </local-check-config>
+    <local-check-config name="Checkstyle Checks for Tests" location=".settings/checkstyle_test.xml" type="project" description="">
+        <additional-data name="protect-config-file" value="false"/>
+    </local-check-config>
+    <fileset name="Checkstyle Checks for sources" enabled="true" check-config-name="Checkstyle Checks" local="true">
         <file-match-pattern match-pattern=".java$" include-pattern="true"/>
+        <file-match-pattern match-pattern="tst\.*.*" include-pattern="false"/>
+    </fileset>
+    <fileset name="Checkstyle Checks for tests" enabled="true" check-config-name="Checkstyle Checks for Tests" local="true">
+        <file-match-pattern match-pattern="tst/*.*.java$" include-pattern="true"/>
     </fileset>
 </fileset-config>

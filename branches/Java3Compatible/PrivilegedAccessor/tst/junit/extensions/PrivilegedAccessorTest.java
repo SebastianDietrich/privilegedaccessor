@@ -102,7 +102,8 @@ public class PrivilegedAccessorTest extends TestCase {
                 "wait()", "registerNatives()", "getClass()", "equals(java.lang.Object)", "toString()", "notify()", "notifyAll()"});
         assertEquals(testMethodSignatures, PrivilegedAccessor.getMethodSignatures(Object.class));
         
-        testMethodSignatures = Arrays.asList(new String[] {"equals(java.lang.Object)", "getName()", "setName()", "setName(java.lang.String)", "setStaticNumber(int)",
+        testMethodSignatures = Arrays.asList(new String[] {"equals(java.lang.Object)", "getName()", "setName()",
+                "setName(java.lang.String)", "setStaticNumber(int)",
                 "hashCode()", "finalize()", "clone()", "wait(long, int)", "wait(long)",
                 "wait()", "registerNatives()", "getClass()", "equals(java.lang.Object)", "toString()", "notify()", "notifyAll()"});
         assertEquals(testMethodSignatures, PrivilegedAccessor.getMethodSignatures(this.parent));        
@@ -474,7 +475,7 @@ public class PrivilegedAccessorTest extends TestCase {
         }
         
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setNumber(java.lang.String)", (Object[])null);
+            PrivilegedAccessor.invokeMethod(this.child, "setNumber(java.lang.String)", (Object[]) null);
             fail("should throw NoSuchMethodException");
         } catch (NoSuchMethodException e) {
             // that is what we expect
@@ -496,14 +497,15 @@ public class PrivilegedAccessorTest extends TestCase {
         }
         
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setNumber(int)", (Object[])null);
+            PrivilegedAccessor.invokeMethod(this.child, "setNumber(int)", (Object[]) null);
             fail("should throw NoSuchMethodException");
         } catch (IllegalArgumentException e) {
             // that is what we expect
         }
         
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)", new Object[] { new Integer(3), new Integer(4), null});
+            PrivilegedAccessor.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)",
+                    new Object[] { new Integer(3), new Integer(4), null});
             fail("should throw NoSuchMethodException");
         } catch (IllegalArgumentException e) {
             // that is what we expect
@@ -574,7 +576,8 @@ public class PrivilegedAccessorTest extends TestCase {
 
         //TODO this is a bug
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setPrivateObjects(java.lang.Object[])", new Object[] { "Hello", new Integer(1)});
+            PrivilegedAccessor.invokeMethod(this.child, "setPrivateObjects(java.lang.Object[])",
+                    new Object[] { "Hello", new Integer(1)});
             fail("invoking method which require object arrays as parameters currently fails");
         } catch (IllegalArgumentException e) {
             //that is what we expect
@@ -614,7 +617,8 @@ public class PrivilegedAccessorTest extends TestCase {
         }
         
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)", new Object[] { new Integer[] { new Integer(4), new Integer(3) }});
+            PrivilegedAccessor.invokeMethod(this.child, "setSumOfTwoNumbers(int, int)",
+                    new Object[] { new Integer[] { new Integer(4), new Integer(3) }});
         } catch (IllegalArgumentException e) {
             //that is what we expect
         }
@@ -674,7 +678,8 @@ public class PrivilegedAccessorTest extends TestCase {
         }
         
         try {
-            PrivilegedAccessor.invokeMethod(this.child, "setPrivateObjects(java.lang.Object[])", new Object[] { "Hello", new Integer(3) });
+            PrivilegedAccessor.invokeMethod(this.child, "setPrivateObjects(java.lang.Object[])",
+                    new Object[] { "Hello", new Integer(3) });
             fail("invoking method with single values instead of array as parameters should raise exception");
         } catch (IllegalArgumentException e) {
             //that is what we expect
@@ -732,7 +737,7 @@ public class PrivilegedAccessorTest extends TestCase {
         PrivilegedAccessor.setValue(this.child, "privateShort", (short) 6);
         assertEquals(new Short((short) 6), PrivilegedAccessor.getValue(this.child, "privateShort"));
         
-        PrivilegedAccessor.setValue(this.child, "privateByte", (byte)2);
+        PrivilegedAccessor.setValue(this.child, "privateByte", (byte) 2);
         assertEquals(new Byte((byte) 2), PrivilegedAccessor.getValue(this.child, "privateByte"));
         
         PrivilegedAccessor.setValue(this.child, "privateChar", 'F');
@@ -826,18 +831,21 @@ public class PrivilegedAccessorTest extends TestCase {
     }
     
     public void testInstantiateInnerClass() throws Exception {
-        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"), new Object[] { this.child });
+        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"),
+                new Object[] { this.child });
         assertEquals(Class.forName("junit.extensions.TestChild$TestInnerChild"), tic.getClass());
     }
     
     public void testAccessInnerClass() throws Exception {
-        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"), new Object[] { this.child });
+        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"),
+                new Object[] { this.child });
         PrivilegedAccessor.setValue(tic, "privateInnerNumber", new Integer(5));
         assertEquals(new Integer(5), PrivilegedAccessor.getValue(tic, "privateInnerNumber"));
     }
     
     public void testAccessInnerMethod() throws Exception {
-        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"), new Object[] { this.child });
+        Object tic = PrivilegedAccessor.instantiate(Class.forName("junit.extensions.TestChild$TestInnerChild"),
+                new Object[] { this.child });
         PrivilegedAccessor.invokeMethod(tic, "setPrivateInnerNumber(int)", new Object[] { new Integer(7) });
         assertEquals(new Integer(7), PrivilegedAccessor.invokeMethod(tic, "getPrivateInnerNumber()", null));        
     }

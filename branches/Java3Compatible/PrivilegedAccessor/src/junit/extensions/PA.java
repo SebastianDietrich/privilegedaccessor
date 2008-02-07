@@ -20,21 +20,21 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.getFields(Object)
+     * {@inheritDoc}
      */
     public static Collection getFieldNames(final Object instanceOrClass) {
         return PrivilegedAccessor.getFieldNames(instanceOrClass);
     }
     
     /**
-     * @see junit.extensions.PrivilegedAccessor.getMethodSignaturess(Object)
+     * {@inheritDoc}
      */
     public static Collection getMethodSignatures(final Object instanceOrClass) {
         return PrivilegedAccessor.getMethodSignatures(instanceOrClass);
     }
     
     /**
-     * @see junit.extensions.PrivilegedAccessor.getValue(Object, String)
+     * {@inheritDoc}
      */
     public static Object getValue(final Object instanceOrClass,
             final String fieldName) throws NoSuchFieldException {
@@ -42,7 +42,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class)
+     * {@inheritDoc}
      */
     public static Object instantiate(final Class fromClass)
     throws IllegalArgumentException, InstantiationException,
@@ -52,7 +52,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Class[], Object[])
+     * {@inheritDoc}
      */
     public static Object instantiate(final Class fromClass,
             final Class[] argumentTypes, final Object[] args)
@@ -63,7 +63,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object)
+     * {@inheritDoc}
      */
     public static Object instantiate(final Class fromClass,
             final Object argument)
@@ -74,7 +74,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.instantiate(Class, Object[])
+     * {@inheritDoc}
      */
     public static Object instantiate(final Class fromClass, final Object[] args)
     throws IllegalArgumentException, InstantiationException,
@@ -84,7 +84,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature)
@@ -94,7 +94,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, boolean)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final boolean arg)
@@ -104,7 +104,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, byte)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final byte arg)
@@ -114,7 +114,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, char)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final char arg)
@@ -124,7 +124,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, double)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final double arg)
@@ -134,7 +134,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, float)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final float arg)
@@ -144,7 +144,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, int)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final int arg)
@@ -154,7 +154,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, long)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final long arg)
@@ -164,7 +164,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, Object)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final Object arg)
@@ -174,7 +174,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, Object[])
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final Object[] arguments)
@@ -184,7 +184,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.invokeMethod(Object, String, short)
+     * {@inheritDoc}
      */
     public static Object invokeMethod(final Object instanceOrClass,
             final String methodSignature, final short arg)
@@ -194,7 +194,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, boolean)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final boolean value)
@@ -203,7 +203,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, byte)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final byte value)
@@ -212,7 +212,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, char)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final char value)
@@ -221,7 +221,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, double)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final double value)
@@ -230,7 +230,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, float)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final float value)
@@ -239,7 +239,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, int)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final int value)
@@ -248,7 +248,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, long)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final long value)
@@ -257,7 +257,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, Object)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final Object value)
@@ -266,7 +266,7 @@ public final class PA {
     }
 
     /**
-     * @see junit.extensions.PrivilegedAccessor.setValue(Object, String, short)
+     * {@inheritDoc}
      */
     public static void setValue(final Object instanceOrClass,
             final String fieldName, final short value)

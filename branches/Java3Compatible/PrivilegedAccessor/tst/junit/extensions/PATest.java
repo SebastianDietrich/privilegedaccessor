@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import junit.extensions.PA;
-import junit.extensions.PrivilegedAccessor;
-import junit.extensions.PrivilegedAccessorTest;
-import junit.extensions.TestChild;
-import junit.extensions.TestParent;
 import junit.framework.TestCase;
 
 /**
@@ -105,9 +100,10 @@ public class PATest extends TestCase {
                 "wait()", "registerNatives()", "getClass()", "equals(java.lang.Object)", "toString()", "notify()", "notifyAll()"});
         assertEquals(testMethodSignatures, PA.getMethodSignatures(Object.class));
         
-        testMethodSignatures = Arrays.asList(new String[] {"equals(java.lang.Object)", "getName()", "setName()", "setName(java.lang.String)", "setStaticNumber(int)",
-                "hashCode()", "finalize()", "clone()", "wait(long, int)", "wait(long)",
-                "wait()", "registerNatives()", "getClass()", "equals(java.lang.Object)", "toString()", "notify()", "notifyAll()"});
+        testMethodSignatures = Arrays.asList(new String[] {"equals(java.lang.Object)", "getName()", "setName()", 
+                "setName(java.lang.String)", "setStaticNumber(int)", "hashCode()", "finalize()", "clone()", "wait(long, int)", 
+                "wait(long)", "wait()", "registerNatives()", "getClass()", "equals(java.lang.Object)", "toString()", "notify()",
+                "notifyAll()"});
         assertEquals(testMethodSignatures, PA.getMethodSignatures(this.parent));        
     }
     
@@ -214,14 +210,14 @@ public class PATest extends TestCase {
     public void testInstantiateOnInvalidParameters() throws Exception {
         try {
             PA.instantiate(TestParent.class, new Integer(21));
-            fail ("instantiating with wrong parameter type should throw Exception");
+            fail("instantiating with wrong parameter type should throw Exception");
         } catch (Exception e) {
             //this is what we expect
         }
         
         try {
             PA.instantiate(TestChild.class, new Object[] { "Charlie", "Brown" });
-            fail ("instantiating with wrong second parameter type should throw Exception");
+            fail("instantiating with wrong second parameter type should throw Exception");
         } catch (Exception e) {
             //this is what we expect
         }        
@@ -229,10 +225,10 @@ public class PATest extends TestCase {
         try {
             PA.instantiate(TestChild.class, new Class[] {String.class, String.class},
                     new Object[] { "Charlie", new Integer(8) });
-            fail ("instantiating with unmatching parameter types should throw Exception");
+            fail("instantiating with unmatching parameter types should throw Exception");
             PA.instantiate(TestChild.class, new Class[] {String.class, Integer.class},
                     new Object[] { "Charlie", "Brown" });
-            fail ("instantiating with unmatching parameter types should throw Exception");
+            fail("instantiating with unmatching parameter types should throw Exception");
         } catch (Exception e) {
             //this is what we expect
         }
@@ -240,7 +236,7 @@ public class PATest extends TestCase {
         try {
             PA.instantiate(TestChild.class, new Class[] {String.class, Integer.class, String.class},
                     new Object[] { "Charlie", new Integer(8), "Brown" });
-            fail ("instantiating with wrong parameter count should throw Exception");
+            fail("instantiating with wrong parameter count should throw Exception");
         } catch (Exception e) {
             //this is what we expect
         }               
@@ -279,7 +275,7 @@ public class PATest extends TestCase {
         PA.invokeMethod(this.parent, "setName(java.lang.String)", "Herbert");
         assertEquals("Herbert", PA.getValue(this.parent, "privateName"));
 
-        PA.invokeMethod(this.parent, "setName(java.lang.String)", (String)null);
+        PA.invokeMethod(this.parent, "setName(java.lang.String)", (String) null);
         assertEquals(null, PA.getValue(this.parent, "privateName"));
         
         PA.invokeMethod(this.parent, "setName()");
@@ -311,10 +307,10 @@ public class PATest extends TestCase {
         PA.invokeMethod(this.child, "setPrivateLong(long)", 3L);
         assertEquals(new Long(3L), PA.invokeMethod(this.child, "getPrivateLong()"));
 
-        PA.invokeMethod(this.child, "setPrivateShort(short)", (short)3);
+        PA.invokeMethod(this.child, "setPrivateShort(short)", (short) 3);
         assertEquals(new Short((short) 3), PA.invokeMethod(this.child, "getPrivateShort()"));
 
-        PA.invokeMethod(this.child, "setPrivateByte(byte)", (byte)3);
+        PA.invokeMethod(this.child, "setPrivateByte(byte)", (byte) 3);
         assertEquals(new Byte((byte) 3), PA.invokeMethod(this.child, "getPrivateByte()"));
 
         PA.invokeMethod(this.child, "setPrivateBoolean(boolean)", true);
@@ -483,7 +479,7 @@ public class PATest extends TestCase {
         }
         
         try {
-            PA.invokeMethod(this.child, "setNumber(java.lang.String)", (Object[])null);
+            PA.invokeMethod(this.child, "setNumber(java.lang.String)", (Object[]) null);
             fail("should throw NoSuchMethodException");
         } catch (NoSuchMethodException e) {
             // that is what we expect
@@ -505,7 +501,7 @@ public class PATest extends TestCase {
         }
         
         try {
-            PA.invokeMethod(this.child, "setNumber(int)", (Object[])null);
+            PA.invokeMethod(this.child, "setNumber(int)", (Object[]) null);
             fail("should throw NoSuchMethodException");
         } catch (IllegalArgumentException e) {
             // that is what we expect
@@ -731,10 +727,10 @@ public class PATest extends TestCase {
         PA.setValue(this.child, "privateLong", 8L);
         assertEquals(new Long(8L), PA.getValue(this.child, "privateLong"));
 
-        PA.setValue(this.child, "privateShort", (short)6);
+        PA.setValue(this.child, "privateShort", (short) 6);
         assertEquals(new Short((short) 6), PA.getValue(this.child, "privateShort"));
         
-        PA.setValue(this.child, "privateByte", (byte)2);
+        PA.setValue(this.child, "privateByte", (byte) 2);
         assertEquals(new Byte((byte) 2), PA.getValue(this.child, "privateByte"));
         
         PA.setValue(this.child, "privateChar", 'F');
