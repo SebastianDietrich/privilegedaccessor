@@ -4,9 +4,8 @@ package junit.extensions;
  * Test class with private methods to invoke via PrivilegedAccessor
  */
 public class TestParent {
-    private String privateName;
-
     private static int privateStaticNumber;
+    private String privateName;
 
     public TestParent(String name) {
         this.privateName = name;

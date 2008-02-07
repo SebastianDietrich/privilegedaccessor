@@ -55,10 +55,10 @@ public final class PrivilegedAccessor {
         Field[] fields = clazz.getDeclaredFields();
         Collection fieldNames = new ArrayList(fields.length);
         
-        for (int x=0; x<fields.length; x++) {
+        for (int x = 0; x < fields.length; x++) {
             fieldNames.add(fields[x].getName());
         }
-        fieldNames.addAll(getFieldNames (clazz.getSuperclass()));
+        fieldNames.addAll(getFieldNames(clazz.getSuperclass()));
         
         return fieldNames;
     }
@@ -80,11 +80,11 @@ public final class PrivilegedAccessor {
         Method[] methods = clazz.getDeclaredMethods();
         Collection methodSignatures = new ArrayList(methods.length + Object.class.getDeclaredMethods().length);
         
-        for (int x=0; x<methods.length; x++) {
+        for (int x = 0; x < methods.length; x++) {
             Method method = methods[x];
             methodSignatures.add(method.getName() + "(" + getParameterTypesAsString(method.getParameterTypes()) + ")");
         }
-        methodSignatures.addAll(getMethodSignatures (clazz.getSuperclass()));
+        methodSignatures.addAll(getMethodSignatures(clazz.getSuperclass()));
         
         return methodSignatures;
     }
