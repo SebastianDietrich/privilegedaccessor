@@ -1,5 +1,5 @@
 #labels ReleaseNotes
-== Version 1.2 ==
+== Version 1.2 (25.2.2012) ==
 Version 1.2 is the Java 1.5 (and later) compatible version of PrivilegedAccessor. 
 
 FUNCTIONAL CHANGES:
