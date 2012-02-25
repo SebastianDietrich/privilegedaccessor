@@ -1,5 +1,5 @@
-#labels History,Name
-The name "PrivilegedAccessor" comes from its purpose: To obtain _privileged access_ to private parts of classes. With privileged access you can do anything with classes that would otherwise not be possible.
+#labels History,Name,Future
+The name "PrivilegedAccessor" comes from its purpose: To obtain _privileged access_ to private parts of classes. With privileged access you can do anything with classes that would otherwise not be possible. See [Introduction] on how to use it.
 
 == History ==
 PrivilegedAccessor was initially provided by Charlie Hubbard and Prashant Dhokte who also coined the name PrivilegedAccessor.
