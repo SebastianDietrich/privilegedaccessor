@@ -10,6 +10,8 @@ In 2004-2005 it has been improved a lot - e.g. adding the possibility to work wi
 
 In February 2012 the project was moved to google code since the authors thought it would be a more convenient place to host a tiny library like PrivilegedAccessor.
 
+See [Release Notes] on detailed info on releases.
+
 == Future ==
 PrivilegedAccessor never intended to provide more than simple-to-use privileged access to hidden parts of classes. This will not change in the future.
 Nevertheless we are working on some features to make the usage of PrivilegedAccessor even simpler - see e.g.:
