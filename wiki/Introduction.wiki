@@ -53,7 +53,7 @@ PA (the convenience short form for PrivilegedAccessor) works with varargs and au
  * `PA.invokeMethod(myObject, "sayHello(java.lang.Integer)", 42);`
 
 == Caveats ==
- * be sure to always use the full method signature for invokeMethod - i.e. including fully qualified parameter classes (e.g. `PA.invokeMethod(myObject, "setName(*java.lang.String*)", "Tom");)`
+ * be sure to always use the full method signature for invokeMethod - i.e. including fully qualified parameter classes (e.g. `PA.invokeMethod(myObject, "setName(java.lang.String)", "Tom");)`
  * you can use all sorts of arguments (primitives, objects and arrays)
  * you can access private member classes - but you need to add the surrounding object as first argument - e.g. `PA.instantiate(Class.forName("MyClass$MyInnerClass"), myObject);`
 
