@@ -1,0 +1,19 @@
+#labels History,Name
+The name "PrivilegedAccessor" comes from its purpose: To obtain _privileged access_ to private parts of classes. With privileged access you can do anything with classes that would otherwise not be possible.
+
+== History ==
+PrivilegedAccessor was initially provided by Charlie Hubbard and Prashant Dhokte who also coined the name PrivilegedAccessor.
+
+In 2004 (2004-11-26) Sebastian Dietrich started a [https://sourceforge.net/projects/privaccessor/ sourceforge project for PrivilegedAccessor] with the permission of the original authors. This project was also backlinked by the JUnit FAQ on [http://junit.sourceforge.net/doc/faq/faq.htm#tests_11 "How do I test private methods?"].
+
+In 2004-2005 it has been improved a lot - e.g. adding the possibility to work with Java5 varargs Arguments instead of putting arguments in object-arrays. Later it became more silent around PrivilegedAccessor.
+
+In February 2012 the project was moved to google code since the authors thought it would be a more convenient place to host a tiny library like PrivilegedAccessor.
+
+== Future ==
+PrivilegedAccessor never intended to provide more than simple-to-use privileged access to hidden parts of classes. This will not change in the future.
+Nevertheless we are working on some features to make the usage of PrivilegedAccessor even simpler - see e.g.:
+ * Issue 8: Not-checked Exceptions in API - i.e. you no longer need to throw exceptions in your unit-test when using PA. If PA throws a (Runtime)Exception you know that your test is coded wrong (anyhow you can't do anything but change your test)
+ * Issue 9: Extend API with method chaining - i.e. you will be able to set-up your class-under-test even more easily - e.g. {{{PA.new(insatance).value("fieldName", value).value("otherFieldName", otherValue);}}}
+
+If you have any suggestions, please feel free to create an issue for it.
