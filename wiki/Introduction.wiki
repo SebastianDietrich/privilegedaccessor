@@ -66,3 +66,5 @@ PrivilegedAccessor uses a lot of unit tests to check its functionality - if you 
 == Advise ==
 *Do not use PrivilegedAccessor in production code* - since it undermines the information hiding principle.
 Use it ONLY for testing or test setup/teardown purposes - e.g. for assigning mock objects, or asserting post-conditions.
+
+|| <wiki:gadget url="http://www.ohloh.net/p/PrivilegedAccessor/widgets/project_cocomo.xml" width="350" height="195" border="0" /> || <wiki:gadget url="http://www.ohloh.net/p/PrivilegedAccessor/widgets/project_factoids.xml" width="350" height="155" border="0" /> || [https://privileged-accessor.ci.cloudbees.com/ http://www.cloudbees.com/sites/default/files/Button-Powered-by-CB.png] ||
