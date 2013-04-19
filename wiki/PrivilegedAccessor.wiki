@@ -10,12 +10,13 @@ In 2004-2005 it has been improved a lot - e.g. adding the possibility to work wi
 
 In February 2012 the project was moved to google code since the authors thought it would be a more convenient place to host a tiny library like PrivilegedAccessor.
 
+Since April 2013 this project can also be downloaded from maven central
+
 See [ReleaseNotes] on detailed info on releases.
 
 == Future ==
 PrivilegedAccessor never intended to provide more than simple-to-use privileged access to hidden parts of classes. This will not change in the future.
 Nevertheless we are working on some features to make the usage of PrivilegedAccessor even simpler - see e.g.:
- * Issue 8: Not-checked Exceptions in API - i.e. you no longer need to throw exceptions in your unit-test when using PA. If PA throws a (Runtime)Exception you know that your test is coded wrong (anyhow you can't do anything but change your test)
- * Issue 9: Extend API with method chaining - i.e. you will be able to set-up your class-under-test even more easily - e.g. {{{PA.new(insatance).value("fieldName", value).value("otherFieldName", otherValue);}}}
+ * Issue 15: Extend existing method chaining, so you will be able to set-up your class-under-test even more easily - e.g. {{{PA.new(instance).value("fieldName", value).value("otherFieldName", otherValue);}}}
 
 If you have any suggestions, please feel free to create an issue for it.
