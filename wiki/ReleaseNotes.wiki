@@ -1,5 +1,20 @@
 #labels ReleaseNotes
 == Version 1.2 (25.2.2012) ==
+Version 1.2 is the latest release of PrivilegedAccessor.
+
+FEATURES:
+ * Issue 8: all PA methods now only throw RuntimeExceptions -> no need to catch any exceptions when working with PA. This reduces your code a lot.
+ * Issue 9: method-chaining is now possible for setValue(). e.g. setValue().setValue().getValue()... Unfortunately that is the only method that would otherwise return void, so no method-chaining for other methods
+ * Issue 12: setField() now works as well with final fields. At least as long as they are not static
+
+FIXED BUGS & ENHANCEMENTS:
+ * Issue 6: semi automatic upload of releases to Google-Code
+ * Issue 5: semi automatic upload of releases to maven central
+
+KNOWN BUGS:
+none
+
+== Version 1.2 (25.2.2012) ==
 Version 1.2 is the Java 1.5 (and later) compatible version of PrivilegedAccessor. 
 
 FUNCTIONAL CHANGES:
