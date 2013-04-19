@@ -1,6 +1,6 @@
 #labels Featured,Phase-Requirements
 *PrivilegedAccessor* is a simple to use Java framework for accessing `private` methods, attributes, and constructors via reflection.
-
+<g:plusone size="medium"></g:plusone>
 = Introduction =
 In unit-testing you often need to prepare and later inspect the unit-under-test before you can test it. For instance you might need to inject mock-objects in your unit, so your unit-test does not access other units like backend systems. Or you might need to access a private attribute to assert a post-condition of a unit after the test.
 
@@ -35,19 +35,20 @@ PrivilegedAccessor tries to find the method, attribute, constructor you want to 
 == How can you use it ==
 The usage of PrivilegedAccessor is rather simple. Use the following to access your otherwise unaccessible code:
 
- * getValue(Object objectOrClass, String attribute-name) - to read a private attribute
- * setValue(Object objectOrClass, String attribute-name, Object new-value) - to change a private attribute
- * instantiate(Class clazz) - to instantiate a class via its private constructor
- * instantiate(Class clazz, Object... parameters) - to instantiate a class via a private constructor with parameters
- * invokeMethod(Object objectOrClass, String methodSignature, Object... args) - to invoke a private method
- * getFieldNames(Object objectOrClass) - to get all fields of an object or class (including fields of super-classes)
- * getMethodSignatures(Object objectOrClass) - to get all method signatures of an object or class (including super-classes)
+ * PA.getValue(Object objectOrClass, String attribute-name) - to read a private attribute
+ * PA.setValue(Object objectOrClass, String attribute-name, Object new-value) - to change a private attribute
+ * PA.instantiate(Class clazz) - to instantiate a class via its private constructor
+ * PA.instantiate(Class clazz, Object... parameters) - to instantiate a class via a private constructor with parameters
+ * PA.invokeMethod(Object objectOrClass, String methodSignature, Object... args) - to invoke a private method
+ * PA.getFieldNames(Object objectOrClass) - to get all fields of an object or class (including fields of super-classes)
+ * PA.getMethodSignatures(Object objectOrClass) - to get all method signatures of an object or class (including super-classes)
 
-PA (the convenience short form for PrivilegedAccessor) works with varargs and autoboxing.
+PA (the convenience short form for PrivilegedAccessor) works with varargs and autoboxing and only throws RuntimeExceptions.
 
 == Examples ==
  * `PA.getValue(myObject, "myAttribute");`
  * `PA.setValue(myObject, "myAttribute", 42);`
+ * `PA.setValue(myObject, "myAttribute", 42).setValue("myOtherAttribute", "newValue");`
  * `PA.instantiate(MyClass.class);`
  * `PA.instantiate(MyClass.class, "Hello", "World", 42);`
  * `PA.invokeMethod(myObject, "sayHello(java.lang.Integer)", 42);`
@@ -56,9 +57,10 @@ PA (the convenience short form for PrivilegedAccessor) works with varargs and au
  * be sure to always use the full method signature for invokeMethod - i.e. including fully qualified parameter classes (e.g. `PA.invokeMethod(myObject, "setName(java.lang.String)", "Tom");)`
  * you can use all sorts of arguments (primitives, objects and arrays)
  * you can access private member classes - but you need to add the surrounding object as first argument - e.g. `PA.instantiate(Class.forName("MyClass$MyInnerClass"), myObject);`
+ * you can access final fields, but not change final static fields
 
 == Compatibility ==
- * PrivilegedAccessor V 1.1.X is downward compatible to Java 1.3 (tested), but should work as well with newer releases (tested up to Java 1.7)
+ * PrivilegedAccessor V 1.1 is downward compatible to Java 1.3 (tested), but should work as well with newer releases (tested up to Java 1.7)
  * PrivilegedAccessor V 1.2 and onwards is downward compatible to Java 1.5 (tested), but should work as well with newer releases (tested up to Java 1.7)
 
 PrivilegedAccessor uses a lot of unit tests to check its functionality - if you find a bug or missing feature, please feel free to contact us.
