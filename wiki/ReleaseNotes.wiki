@@ -1,6 +1,6 @@
 #labels ReleaseNotes
-== Version 1.2 (25.2.2012) ==
-Version 1.2 is the latest release of PrivilegedAccessor.
+== Version 1.2.1 (25.2.2012) ==
+Version 1.2.1 is the latest release of PrivilegedAccessor.
 
 FEATURES:
  * Issue 8: all PA methods now only throw RuntimeExceptions -> no need to catch any exceptions when working with PA. This reduces your code a lot.
