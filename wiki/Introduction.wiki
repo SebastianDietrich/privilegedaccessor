@@ -28,6 +28,16 @@ With PrivilegedAccessor the same task is much less work:
 float howMuchMyBossEarns = PA.getValue(boss, "salary");
 </code>
 
+== Download ==
+You can download PrivilegedAccessor via the download tab or from maven central using:
+<code language="xml">
+<dependency>
+  <groupId>com.e-movimento.tinytools</groupId>
+  <artifactId>privilegedaccessor</artifactId>
+  <version>1.2.1</version>
+</dependency>
+</code>
+
 == How does it work ==
 PrivilegedAccessor is based on Java reflection and the possibility to change access-rights via "setAccessible(true)".
 PrivilegedAccessor tries to find the method, attribute, constructor you want to access, sets its accessibility to true and accesses it.
