@@ -11,16 +11,16 @@ Fortunately we have reflection to access everything in our classes. Unfortunatel
 *Example:*
 Accessing the private (`float`) field `salary` of the object `boss` of class `Manager` via reflection:
 <code language="java">
-      try {
-         Field field = Manager.class.getDeclaredField(salary);
-         field.setAccessible(true);
-         float howMuchMyBossEarns = (float) field.get(boss);
-      } catch (NoSuchFieldException e) {
-         assert false: "class 'Manager' has no field 'salary'";
-      } catch (IllegalAccessException e) {
-         assert false : "could not access field 'salary'";
-         return null;
-      }
+try {
+  Field field = Manager.class.getDeclaredField(salary);
+  field.setAccessible(true);
+  float howMuchMyBossEarns = (float) field.get(boss);
+} catch (NoSuchFieldException e) {
+  assert false: "class 'Manager' has no field 'salary'";
+} catch (IllegalAccessException e) {
+  assert false : "could not access field 'salary'";
+  return null;
+}
 </code>
 
 With PrivilegedAccessor the same task is much less work:
