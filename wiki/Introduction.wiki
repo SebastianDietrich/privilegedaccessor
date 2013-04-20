@@ -31,11 +31,11 @@ float howMuchMyBossEarns = PA.getValue(boss, "salary");
 == Download ==
 You can download PrivilegedAccessor via the download tab or from maven central using:
 <code language="xml">
-<dependency>
-<groupId>com.e-movimento.tinytools</groupId>
-<artifactId>privilegedaccessor</artifactId>
-<version>1.2.1</version>
-</dependency>
+  <dependency>
+    <groupId>com.e-movimento.tinytools</groupId>
+    <artifactId>privilegedaccessor</artifactId>
+    <version>1.2.1</version>
+  </dependency>
 </code>
 
 == How does it work ==
