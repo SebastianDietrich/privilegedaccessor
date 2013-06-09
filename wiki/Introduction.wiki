@@ -61,11 +61,15 @@ PA (the convenience short form for PrivilegedAccessor) works with varargs and au
  * `PA.setValue(myObject, "myAttribute", 42).setValue("myOtherAttribute", "newValue");`
  * `PA.instantiate(MyClass.class);`
  * `PA.instantiate(MyClass.class, "Hello", "World", 42);`
- * `PA.invokeMethod(myObject, "sayHello(java.lang.Integer)", 42);`
+ * `PA.invokeMethod(myObject, "addInt(int)", 42);`
+ * `PA.invokeMethod(myObject, "addInteger(java.lang.Integer)", 42);`
+ * `PA.invokeMethod(myObject, "addIntegers(java.lang.Integer...)", 42, 43, 44);`
+ * `PA.invokeMethod(myObject, "addIntegerArray(java.lang.Integer[])", new Integer[] {42, 43, 44});`
+
+You can access methods with all sorts of arguments (primitives, objects, varargs, arrays), just be sure to qualify the arguments correctly.
 
 == Caveats ==
  * be sure to always use the full method signature for invokeMethod - i.e. including fully qualified parameter classes (e.g. `PA.invokeMethod(myObject, "setName(java.lang.String)", "Tom");)`
- * you can use all sorts of arguments (primitives, objects and arrays)
  * you can access private inner classes - but you need to add the surrounding object as first argument - e.g. `PA.instantiate(Class.forName("MyClass$MyInnerClass"), myObject);` (this is not necessary for private static nested classes)
  * you can access final fields, but not change final static fields
 
