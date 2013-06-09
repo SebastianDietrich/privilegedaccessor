@@ -41,7 +41,7 @@ You can download PrivilegedAccessor via [https://code.google.com/p/privilegedacc
 PrivilegedAccessor is based on Java reflection and the possibility to change access-rights via "setAccessible(true)".
 PrivilegedAccessor tries to find the method, attribute, constructor you want to access, sets its accessibility to true and accesses it.
 
-== How can you use it ==
+=== Usage ===
 The usage of PrivilegedAccessor is rather simple. Use the following to access your otherwise unaccessible code:
 
  * `PA.getValue(Object objectOrClass, String attribute-name)` - to read a private attribute
@@ -54,7 +54,7 @@ The usage of PrivilegedAccessor is rather simple. Use the following to access yo
 
 PA (the convenience short form for PrivilegedAccessor) works with varargs and autoboxing and only throws RuntimeExceptions.
 
-== Examples ==
+==== Examples ====
 <code language="java">
 PA.getValue(myObject, "myAttribute");
 PA.setValue(myObject, "myAttribute", 42);
@@ -67,18 +67,18 @@ PA.invokeMethod(myObject, "addIntegers(java.lang.Integer...)", 42, 43, 44);
 PA.invokeMethod(myObject, "addIntegerArray(java.lang.Integer[])", new Integer[] {42, 43, 44});</code>
 You can access methods with all sorts of arguments (primitives, objects, varargs, arrays), just be sure to qualify the arguments correctly.
 
-== Caveats ==
+=== Caveats ===
  * be sure to always use the full method signature for invokeMethod - i.e. including fully qualified parameter classes (e.g. `PA.invokeMethod(myObject, "setName(java.lang.String)", "Tom");)`
  * you can access private inner classes - but you need to add the surrounding object as first argument - e.g. `PA.instantiate(Class.forName("MyClass$MyInnerClass"), myObject);` (this is not necessary for private static nested classes)
  * you can access final fields, but not change final static fields
 
-== Compatibility ==
+=== Compatibility ===
  * PrivilegedAccessor V 1.1 is downward compatible to Java 1.3 (tested), but should work as well with newer releases (tested up to Java 1.7)
  * PrivilegedAccessor V 1.2 and onwards is downward compatible to Java 1.5 (tested), but should work as well with newer releases (tested up to Java 1.7)
 
 PrivilegedAccessor uses a lot of unit tests to check its functionality - if you find a bug or missing feature, please feel free to contact us.
 
-== Advise ==
+=== Advise ===
 *Do not use PrivilegedAccessor in production code* - since it undermines the information hiding principle.
 Use it ONLY for testing or test setup/teardown purposes - e.g. for assigning mock objects, or asserting post-conditions.
 
