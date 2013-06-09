@@ -20,8 +20,7 @@ try {
 } catch (IllegalAccessException e) {
   assert false : "could not access field 'salary'";
   return null;
-}
-</code>
+}</code>
 
 With PrivilegedAccessor the same task is much less work:
 <code language="java">
@@ -45,27 +44,27 @@ PrivilegedAccessor tries to find the method, attribute, constructor you want to 
 == How can you use it ==
 The usage of PrivilegedAccessor is rather simple. Use the following to access your otherwise unaccessible code:
 
- * PA.getValue(Object objectOrClass, String attribute-name) - to read a private attribute
- * PA.setValue(Object objectOrClass, String attribute-name, Object new-value) - to change a private attribute
- * PA.instantiate(Class clazz) - to instantiate a class via its private constructor
- * PA.instantiate(Class clazz, Object... parameters) - to instantiate a class via a private constructor with parameters
- * PA.invokeMethod(Object objectOrClass, String methodSignature, Object... args) - to invoke a private method
- * PA.getFieldNames(Object objectOrClass) - to get all fields of an object or class (including fields of super-classes)
- * PA.getMethodSignatures(Object objectOrClass) - to get all method signatures of an object or class (including super-classes)
+ * `PA.getValue(Object objectOrClass, String attribute-name)` - to read a private attribute
+ * `PA.setValue(Object objectOrClass, String attribute-name, Object new-value)` - to change a private attribute
+ * `PA.instantiate(Class clazz)` - to instantiate a class via its private constructor
+ * `PA.instantiate(Class clazz, Object... parameters)` - to instantiate a class via a private constructor with parameters
+ * `PA.invokeMethod(Object objectOrClass, String methodSignature, Object... args)` - to invoke a private method
+ * `PA.getFieldNames(Object objectOrClass)` - to get all fields of an object or class (including fields of super-classes)
+ * `PA.getMethodSignatures(Object objectOrClass)` - to get all method signatures of an object or class (including super-classes)
 
 PA (the convenience short form for PrivilegedAccessor) works with varargs and autoboxing and only throws RuntimeExceptions.
 
 == Examples ==
- * `PA.getValue(myObject, "myAttribute");`
- * `PA.setValue(myObject, "myAttribute", 42);`
- * `PA.setValue(myObject, "myAttribute", 42).setValue("myOtherAttribute", "newValue");`
- * `PA.instantiate(MyClass.class);`
- * `PA.instantiate(MyClass.class, "Hello", "World", 42);`
- * `PA.invokeMethod(myObject, "addInt(int)", 42);`
- * `PA.invokeMethod(myObject, "addInteger(java.lang.Integer)", 42);`
- * `PA.invokeMethod(myObject, "addIntegers(java.lang.Integer...)", 42, 43, 44);`
- * `PA.invokeMethod(myObject, "addIntegerArray(java.lang.Integer[])", new Integer[] {42, 43, 44});`
-
+<code language="java">
+PA.getValue(myObject, "myAttribute");
+PA.setValue(myObject, "myAttribute", 42);
+PA.setValue(myObject, "myAttribute", 42).setValue("myOtherAttribute", newValue");
+PA.instantiate(MyClass.class);
+PA.instantiate(MyClass.class, "Hello", "World", 42);
+PA.invokeMethod(myObject, "addInt(int)", 42);
+PA.invokeMethod(myObject, "addInteger(java.lang.Integer)", 42);
+PA.invokeMethod(myObject, "addIntegers(java.lang.Integer...)", 42, 43, 44);
+PA.invokeMethod(myObject, "addIntegerArray(java.lang.Integer[])", new Integer[] {42, 43, 44});</code>
 You can access methods with all sorts of arguments (primitives, objects, varargs, arrays), just be sure to qualify the arguments correctly.
 
 == Caveats ==
