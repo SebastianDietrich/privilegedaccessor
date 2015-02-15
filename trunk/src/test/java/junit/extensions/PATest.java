@@ -583,12 +583,31 @@ public class PATest {
     @Test
     public final void testToString() {
         assertEquals("java.lang.Object", PA.toString(new Object()));
-        assertEquals(this.parent.toString(), PA.toString(this.parent));
-        assertEquals(this.child.toString(), PA.toString(this.child));
-        assertEquals(this.childInParent.toString(), PA.toString(this.childInParent));
+      assertTrue(toStringEquals(this.parent.toString(), PA.toString(this.parent)));
+      assertTrue(toStringEquals(this.child.toString(), PA.toString(this.child)));
+      assertTrue(toStringEquals(this.childInParent.toString(), PA.toString(this.childInParent)));
     }
 
-    /**
+  private boolean toStringEquals(String toString1, String toString2) {
+    if (toString1.equals(toString2)) return true;
+
+    String[] string1Parts = toString1.split(" ");
+    String[] string2Parts = toString1.split(" ");
+
+    if (! string1Parts[0].equals(string2Parts[0])) return false;
+    if (string1Parts.length != string2Parts.length) return false;
+
+    Collection<String> attributes1 = new ArrayList<String>();
+    Collection<String> attributes2 = new ArrayList<String>();
+    for (int x = 1; x < string1Parts.length; x++) {
+      attributes1.add(string1Parts[x].replace("{", "").replace(",", "").trim());
+      attributes2.add(string2Parts[x].replace("{", "").replace(",", "").trim());
+    }
+
+    return attributes1.containsAll(attributes2);
+  }
+
+  /**
      * Tests the method <code>getFieldNames</code>.
      *
      * @see junit.extensions.PA#getFieldNames(java.lang.Object)
