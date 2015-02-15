@@ -22,14 +22,10 @@ import java.util.*;
 /**
  * This class is used to access a method or field of an object no matter what the access modifier of the method or field. The syntax
  * for accessing fields and methods is out of the ordinary because this class uses reflection to peel away protection.
- * <p/>
  * a.k.a. The "ObjectMolester"
- * <p/>
  * Here is an example of using this to access a private member: <br>
  * <code>myObject</code> is an object of type <code>MyClass</code>. <code>setName(String)</code> is a private method of
  * <code>MyClass</code>.
- * <p/>
- * 
  * <pre>
  * PrivilegedAccessor.invokeMethod(myObject, &quot;setName(java.lang.String)&quot;, &quot;newName&quot;);
  * </pre>
@@ -38,7 +34,7 @@ import java.util.*;
  * @author Prashant Dhokte (pdhokte@iss.net)
  * @author Sebastian Dietrich (sebastian.dietrich@e-movimento.com)
  * @deprecated use PA instead. PA improves the functionality of PrivilegedAccessor by introducing support for varargs and removal of
- *             the necessity to catch exceptions.
+ * the necessity to catch exceptions.
  */
 @Deprecated
 public final class PrivilegedAccessor {
@@ -75,7 +71,6 @@ public final class PrivilegedAccessor {
    *
    * @param instanceOrClass the object or class to get a string representation of
    * @return a string representation of the given object
-   *
    * @deprecated use org.apache.commons.lang3.builder.ToStringBuilder instead
    */
   @Deprecated
@@ -145,7 +140,7 @@ public final class PrivilegedAccessor {
    * Gets the value of the named field and returns it as an object. If instanceOrClass is a class then a static field is returned.
    *
    * @param instanceOrClass the instance or class to get the field from
-   * @param fieldName the name of the field
+   * @param fieldName       the name of the field
    * @return an object representing the value of the field
    * @throws NoSuchFieldException if the field does not exist
    */
@@ -164,16 +159,17 @@ public final class PrivilegedAccessor {
    * the object it is a member of as first argument.
    *
    * @param fromClass the class to instantiate an object from
-   * @param args the arguments to pass to the constructor
+   * @param args      the arguments to pass to the constructor
    * @return an object of the given type
-   * @throws IllegalArgumentException if the number of actual and formal parameters differ; if an unwrapping conversion for primitive
-   *            arguments fails; or if, after possible unwrapping, a parameter value cannot be converted to the corresponding formal
-   *            parameter type by a method invocation conversion.
-   * @throws IllegalAccessException if this Constructor object enforces Java language access control and the underlying constructor is
-   *            inaccessible.
+   * @throws IllegalArgumentException  if the number of actual and formal parameters differ; if an unwrapping conversion for primitive
+   *                                   arguments fails; or if, after possible unwrapping, a parameter value cannot be converted to the
+   *                                   corresponding formal
+   *                                   parameter type by a method invocation conversion.
+   * @throws IllegalAccessException    if this Constructor object enforces Java language access control and the underlying constructor is
+   *                                   inaccessible.
    * @throws InvocationTargetException if the underlying constructor throws an exception.
-   * @throws NoSuchMethodException if the constructor could not be found
-   * @throws InstantiationException if the class that declares the underlying constructor represents an abstract class.
+   * @throws NoSuchMethodException     if the constructor could not be found
+   * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class.
    * @see PrivilegedAccessor#instantiate(Class, Class[], Object[])
    */
   public static <T> T instantiate(final Class<? extends T> fromClass, final Object[] args) throws IllegalArgumentException,
@@ -185,18 +181,19 @@ public final class PrivilegedAccessor {
    * Instantiates an object of the given class with the given arguments and the given argument types. If you want to instantiate a
    * member class, you must provide the object it is a member of as first argument.
    *
-   * @param fromClass the class to instantiate an object from
-   * @param args the arguments to pass to the constructor
+   * @param fromClass     the class to instantiate an object from
+   * @param args          the arguments to pass to the constructor
    * @param argumentTypes the fully qualified types of the arguments of the constructor
    * @return an object of the given type
-   * @throws IllegalArgumentException if the number of actual and formal parameters differ; if an unwrapping conversion for primitive
-   *            arguments fails; or if, after possible unwrapping, a parameter value cannot be converted to the corresponding formal
-   *            parameter type by a method invocation conversion.
-   * @throws IllegalAccessException if this Constructor object enforces Java language access control and the underlying constructor is
-   *            inaccessible.
+   * @throws IllegalArgumentException  if the number of actual and formal parameters differ; if an unwrapping conversion for primitive
+   *                                   arguments fails; or if, after possible unwrapping, a parameter value cannot be converted to the
+   *                                   corresponding formal
+   *                                   parameter type by a method invocation conversion.
+   * @throws IllegalAccessException    if this Constructor object enforces Java language access control and the underlying constructor is
+   *                                   inaccessible.
    * @throws InvocationTargetException if the underlying constructor throws an exception.
-   * @throws NoSuchMethodException if the constructor could not be found
-   * @throws InstantiationException if the class that declares the underlying constructor represents an abstract class.
+   * @throws NoSuchMethodException     if the constructor could not be found
+   * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class.
    * @see PrivilegedAccessor#instantiate(Class, Object[])
    */
   @SuppressWarnings("unchecked")
@@ -212,13 +209,13 @@ public final class PrivilegedAccessor {
    *
    * @param instanceOrClass the instance or class to invoke the method on
    * @param methodSignature the name of the method and the parameters <br>
-   *           (e.g. "myMethod(java.lang.String, com.company.project.MyObject)")
-   * @param arguments an array of objects to pass as arguments
+   *                        (e.g. "myMethod(java.lang.String, com.company.project.MyObject)")
+   * @param arguments       an array of objects to pass as arguments
    * @return the return value of this method or null if void
-   * @throws IllegalAccessException if the method is inaccessible
-   * @throws NoSuchMethodException if no method with the given <code>methodSignature</code> could be found
+   * @throws IllegalAccessException   if the method is inaccessible
+   * @throws NoSuchMethodException    if no method with the given <code>methodSignature</code> could be found
    * @throws IllegalArgumentException if an argument couldn't be converted to match the expected type
-   * @throws Throwable if the underlying method throws a non-runtime exception.
+   * @throws Throwable                if the underlying method throws a non-runtime exception.
    */
   public static Object invokeMethod(final Object instanceOrClass, final String methodSignature, final Object[] arguments)
       throws Throwable {
@@ -240,7 +237,7 @@ public final class PrivilegedAccessor {
    * mistaken by varargs.
    *
    * @param parameterTypes the method signatue the given arguments should match
-   * @param arguments the arguments that should be corrected
+   * @param arguments      the arguments that should be corrected
    * @return the corrected arguments
    */
   private static Object[] getCorrectedArguments(Class<?>[] parameterTypes, Object[] arguments) {
@@ -262,7 +259,7 @@ public final class PrivilegedAccessor {
    * mistaken by varargs.
    *
    * @param parameterType the type to match the given argument upon
-   * @param argument the argument to match the given parameterType
+   * @param argument      the argument to match the given parameterType
    * @return the corrected argument
    */
   private static Object getCorrectedArgument(Class<?> parameterType, Object argument) {
@@ -312,9 +309,9 @@ public final class PrivilegedAccessor {
    * </code>
    *
    * @param instanceOrClass the instance or class to set the field
-   * @param fieldName the name of the field
-   * @param value the new value of the field
-   * @throws NoSuchFieldException if no field with the given <code>fieldName</code> can be found
+   * @param fieldName       the name of the field
+   * @param value           the new value of the field
+   * @throws NoSuchFieldException   if no field with the given <code>fieldName</code> can be found
    * @throws IllegalAccessException possibly if the field was final
    */
   public static void setValue(final Object instanceOrClass, final String fieldName, final Object value) throws NoSuchFieldException,
@@ -399,7 +396,7 @@ public final class PrivilegedAccessor {
   /**
    * Gets the constructor for a given class with the given parameters.
    *
-   * @param type the class to instantiate
+   * @param type           the class to instantiate
    * @param parameterTypes the types of the parameters
    * @return the constructor
    * @throws NoSuchMethodException if the method could not be found
@@ -475,9 +472,9 @@ public final class PrivilegedAccessor {
    * Return the named field from the given instance or class. Returns a static field if instanceOrClass is a class.
    *
    * @param instanceOrClass the instance or class to get the field from
-   * @param fieldName the name of the field to get
+   * @param fieldName       the name of the field to get
    * @return the field
-   * @throws NoSuchFieldException if no such field can be found
+   * @throws NoSuchFieldException      if no such field can be found
    * @throws InvalidParameterException if instanceOrClass was null
    */
   private static Field getField(final Object instanceOrClass, final String fieldName) throws NoSuchFieldException,
@@ -486,28 +483,21 @@ public final class PrivilegedAccessor {
 
     Class<?> type = getClass(instanceOrClass);
 
-    try {
-      Field field = type.getDeclaredField(fieldName);
-      field.setAccessible(true);
-      return field;
-    } catch (NoSuchFieldException e) {
-      if (type.getSuperclass() == null) throw e;
-      return getField(type.getSuperclass(), fieldName);
+    for (Field field : type.getDeclaredFields()) {
+      if (field.getName().equals(fieldName)) {
+        field.setAccessible(true);
+        return field;
+      }
     }
+    if (type.getSuperclass() == null) throw new NoSuchFieldException(fieldName);
+    return getField(type.getSuperclass(), fieldName);
   }
 
   public static Class<?> getFieldType(final Object instanceOrClass, final String fieldName) throws NoSuchFieldException,
       InvalidParameterException {
     if (instanceOrClass == null) throw new InvalidParameterException("Can't get field type on null object/class");
-    Class<?> type = getClass(instanceOrClass);
 
-    try {
-      Field field = type.getDeclaredField(fieldName);
-      return field.getType();
-    } catch (NoSuchFieldException e) {
-      if (type.getSuperclass() == null) throw e;
-      return getFieldType(type.getSuperclass(), fieldName);
-    }
+    return getField(instanceOrClass, fieldName).getType();
   }
 
   /**
@@ -517,28 +507,32 @@ public final class PrivilegedAccessor {
    * @return the class of the given parameter
    */
   private static Class<?> getClass(final Object instanceOrClass) {
-    if (instanceOrClass instanceof Class) return (Class<?>) instanceOrClass;
-
-    return instanceOrClass.getClass();
+    return (instanceOrClass instanceof Class) ? (Class<?>) instanceOrClass : instanceOrClass.getClass();
   }
 
   /**
    * Return the named method with a method signature matching classTypes from the given class.
    *
-   * @param type the class to get the method from
-   * @param methodName the name of the method to get
+   * @param type           the class to get the method from
+   * @param methodName     the name of the method to get
    * @param parameterTypes the parameter-types of the method to get
    * @return the method
    * @throws NoSuchMethodException if the method could not be found
    */
   private static Method getMethod(final Class<?> type, final String methodName, final Class<?>[] parameterTypes)
       throws NoSuchMethodException {
-    try {
-      return type.getDeclaredMethod(methodName, parameterTypes);
-    } catch (NoSuchMethodException e) {
-      if (type.getSuperclass() == null) throw e;
-      return getMethod(type.getSuperclass(), methodName, parameterTypes);
+
+    for (Method method : type.getDeclaredMethods()) {
+      if (method.getName().equals(methodName) && Arrays.equals(method.getParameterTypes(), parameterTypes)) {
+        method.setAccessible(true);
+        return method;
+      }
     }
+
+    if (type.getSuperclass() == null) {
+      throw new NoSuchMethodException(type.getName() + "." + methodName + argumentTypesToString(parameterTypes));
+    }
+    return getMethod(type.getSuperclass(), methodName, parameterTypes);
   }
 
   /**
@@ -546,20 +540,14 @@ public final class PrivilegedAccessor {
    * static method.
    *
    * @param instanceOrClass the instance or class to get the method of
-   * @param methodName the name of the method
-   * @param parameterTypes the parameter-types of the method to get
+   * @param methodName      the name of the method
+   * @param parameterTypes  the parameter-types of the method to get
    * @return the method
    * @throws NoSuchMethodException if the method could not be found
    */
   private static Method getMethod(final Object instanceOrClass, final String methodName, final Class<?>[] parameterTypes)
       throws NoSuchMethodException {
-    Class<?> type;
-
-    type = getClass(instanceOrClass);
-
-    Method accessMethod = getMethod(type, methodName, parameterTypes);
-    accessMethod.setAccessible(true);
-    return accessMethod;
+    return getMethod(getClass(instanceOrClass), methodName, parameterTypes);
   }
 
   /**
@@ -600,7 +588,7 @@ public final class PrivilegedAccessor {
    *
    * @param methodSignature the signature of the method
    * @return the parameter types as class[]
-   * @throws NoSuchMethodException if the method could not be found
+   * @throws NoSuchMethodException    if the method could not be found
    * @throws IllegalArgumentException if one of the given parameters doesn't math the given methodSignature
    */
   private static Class<?>[] getParameterTypes(final String methodSignature) throws NoSuchMethodException, IllegalArgumentException {
