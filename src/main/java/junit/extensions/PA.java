@@ -12,8 +12,13 @@
  */
 package junit.extensions;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * This class is used to access a method or field of an object no matter what the access modifier of the method or field. The syntax for
@@ -73,9 +78,23 @@ public class PA<T> {
    * @deprecated use org.apache.commons.lang3.builder.ToStringBuilder instead
    */
   @Deprecated
-  @SuppressWarnings("deprecation")
   public static String toString(final Object instanceOrClass) {
-    return PrivilegedAccessor.toString(instanceOrClass);
+    Collection<String> fields = getFieldNames(instanceOrClass);
+    if (fields.isEmpty()) return getClass(instanceOrClass).getName();
+
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(getClass(instanceOrClass).getName()).append(" {");
+
+    for (String fieldName : fields) {
+      try {
+        stringBuilder.append(fieldName).append("=").append(getValue(instanceOrClass, fieldName)).append(", ");
+      } catch (IllegalArgumentException e) {
+        assert false : "It should always be possible to get a field that was just here";
+      }
+    }
+
+    stringBuilder.replace(stringBuilder.lastIndexOf(", "), stringBuilder.length(), "}");
+    return stringBuilder.toString();
   }
 
   /**
@@ -86,9 +105,27 @@ public class PA<T> {
    * @return the collection of field names of the given instance or class
    * @see PrivilegedAccessor#getFieldNames(Object)
    */
-  @SuppressWarnings("deprecation")
   public static Collection<String> getFieldNames(final Object instanceOrClass) {
-    return PrivilegedAccessor.getFieldNames(instanceOrClass);
+    if (instanceOrClass == null) return new HashSet<>();
+
+    Class<?> clazz = getClass(instanceOrClass);
+    Field[] fields = clazz.getDeclaredFields();
+
+    Collection<String> fieldNames = getFieldNames(clazz.getSuperclass());
+    for (Field field : fields) {
+      fieldNames.add(field.getName());
+    }
+    return fieldNames;
+  }
+
+  /**
+   * Gets the class of the given parameter. If the parameter is a class, it is returned, if it is an object, its class is returned
+   *
+   * @param instanceOrClass the instance or class to get the class of
+   * @return the class of the given parameter
+   */
+  private static Class<?> getClass(final Object instanceOrClass) {
+    return (instanceOrClass instanceof Class) ? (Class<?>) instanceOrClass : instanceOrClass.getClass();
   }
 
   /**
@@ -100,13 +137,40 @@ public class PA<T> {
    * @return the collection of field names of the given instance or class
    * @see PrivilegedAccessor#getFieldType(Object, String)
    */
-  @SuppressWarnings("deprecation")
   public static Class<?> getFieldType(final Object instanceOrClass, final String fieldName) {
     try {
-      return PrivilegedAccessor.getFieldType(instanceOrClass, fieldName);
+      if (instanceOrClass == null) throw new InvalidParameterException("Can't get field type on null object/class");
+
+      return getField(instanceOrClass, fieldName).getType();
     } catch (NoSuchFieldException e) {
       throw new IllegalArgumentException("Can't get type of " + fieldName + " from " + instanceOrClass, e);
     }
+  }
+
+  /**
+   * Return the named field from the given instance or class. Returns a static field if instanceOrClass is a class.
+   *
+   * @param instanceOrClass the instance or class to get the field from
+   * @param fieldName the name of the field to get
+   * @return the field
+   * @throws NoSuchFieldException if no such field can be found
+   * @throws InvalidParameterException if instanceOrClass was null
+   */
+  private static Field getField(final Object instanceOrClass, final String fieldName)
+      throws NoSuchFieldException,
+      InvalidParameterException {
+    if (instanceOrClass == null) throw new InvalidParameterException("Can't get field on null object/class");
+
+    Class<?> type = getClass(instanceOrClass);
+
+    for (Field field : type.getDeclaredFields()) {
+      if (field.getName().equals(fieldName)) {
+        field.setAccessible(true);
+        return field;
+      }
+    }
+    if (type.getSuperclass() == null) throw new NoSuchFieldException(fieldName);
+    return getField(type.getSuperclass(), fieldName);
   }
 
   /**
@@ -115,11 +179,41 @@ public class PA<T> {
    *
    * @param instanceOrClass the instance or class to get the method signatures of
    * @return the collection of method signatures of the given instance or class
-   * @see PrivilegedAccessor#getMethodSignatures(Object)
    */
-  @SuppressWarnings("deprecation")
   public static Collection<String> getMethodSignatures(final Object instanceOrClass) {
-    return PrivilegedAccessor.getMethodSignatures(instanceOrClass);
+    if (instanceOrClass == null) return new HashSet<>();
+
+    Class<?> clazz = getClass(instanceOrClass);
+    Method[] methods = clazz.getDeclaredMethods();
+    Collection<String> methodSignatures = getMethodSignatures(clazz.getSuperclass());
+
+    for (Method method : methods) {
+      methodSignatures
+        .add(method.getReturnType().getName() + " " + method.getName() + "(" + getParameterTypesAsString(method.getParameterTypes()) + ")");
+    }
+
+    return methodSignatures;
+  }
+
+  /**
+   * Gets the parameter types as a string.
+   *
+   * @param classTypes the types to get as names.
+   * @return the parameter types as a string
+   * @see java.lang.Class#argumentTypesToString(Class[])
+   */
+  private static String getParameterTypesAsString(final Class<?>[] classTypes) {
+    assert classTypes != null : "getParameterTypes() should have been called before this method and should have provided not-null "
+        + "classTypes";
+    if (classTypes.length == 0) return "";
+
+    StringBuilder parameterTypes = new StringBuilder();
+    for (Class<?> clazz : classTypes) {
+      assert clazz != null : "getParameterTypes() should have been called before this method and should have provided not-null classTypes";
+      parameterTypes.append(clazz.getName()).append(", ");
+    }
+
+    return parameterTypes.substring(0, parameterTypes.length() - 2);
   }
 
   /**
@@ -129,12 +223,16 @@ public class PA<T> {
    * @param fieldName the name of the field
    * @return an object representing the value of the field
    * @throws IllegalArgumentException if the field does not exist
-   * @see PrivilegedAccessor#getValue(Object, String)
    */
-  @SuppressWarnings("deprecation")
   public static Object getValue(final Object instanceOrClass, final String fieldName) {
     try {
-      return PrivilegedAccessor.getValue(instanceOrClass, fieldName);
+      Field field = getField(instanceOrClass, fieldName);
+      try {
+        return field.get(instanceOrClass);
+      } catch (IllegalAccessException e) {
+        assert false : "getField() should have setAccessible(true), so an IllegalAccessException should not occur in this place";
+        return null;
+      }
     } catch (Exception e) {
       throw new IllegalArgumentException("Can't get value of " + fieldName + " from " + instanceOrClass, e);
     }
@@ -155,15 +253,87 @@ public class PA<T> {
    *         enforces Java language access control and the underlying constructor is inaccessible; if the underlying constructor throws an
    *         exception; if the constructor could not be found; or if the class that declares the underlying constructor represents an
    *         abstract class.
-   * @see PrivilegedAccessor#instantiate(Class, Class[], Object[])
    */
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("unchecked")
   public static <T> T instantiate(final Class<? extends T> fromClass, final Class<?>[] argumentTypes, final Object... arguments) {
     try {
-      return PrivilegedAccessor.instantiate(fromClass, argumentTypes, correctVarargs(arguments));
+      return (T) getConstructor(fromClass, argumentTypes).newInstance(correctVarargs(arguments));
     } catch (Exception e) {
       throw new IllegalArgumentException("Can't instantiate class " + fromClass + " with arguments " + Arrays.toString(arguments), e);
     }
+  }
+
+  /**
+   * Gets the constructor for a given class with the given parameters.
+   *
+   * @param type the class to instantiate
+   * @param parameterTypes the types of the parameters
+   * @return the constructor
+   * @throws NoSuchMethodException if the method could not be found
+   */
+  private static <T> Constructor<?> getConstructor(final Class<T> type, final Class<?>[] parameterTypes) throws NoSuchMethodException {
+    for (Constructor<?> constructor : type.getDeclaredConstructors()) {
+      if (autoboxingEquals(constructor.getParameterTypes(), parameterTypes)) {
+        constructor.setAccessible(true);
+        return constructor;
+      }
+    }
+    throw new NoSuchMethodException(type.getName() + ".<init>" + argumentTypesToString(parameterTypes));
+  }
+
+  private static String argumentTypesToString(Class<?>[] argTypes) {
+    StringBuilder buf = new StringBuilder();
+    buf.append("(");
+    if (argTypes != null) {
+      for (int i = 0; i < argTypes.length; i++ ) {
+        if (i > 0) {
+          buf.append(", ");
+        }
+        Class<?> c = argTypes[i];
+        buf.append((c == null) ? "null" : c.getName());
+      }
+    }
+    buf.append(")");
+    return buf.toString();
+  }
+
+  /**
+   * Check if the given objectTypes match the given possiblyPrimitiveTypes. Considers autoboxing.
+   */
+  private static boolean autoboxingEquals(Class<?>[] possiblyPrimitiveTypes, Class<?>[] objectTypes) {
+    int length = possiblyPrimitiveTypes.length;
+    if (objectTypes.length != length) return false;
+
+    for (int i = 0; i < length; i++ ) {
+      Class<?> possiblyPrimitiveType = possiblyPrimitiveTypes[i];
+      Class<?> objectType = objectTypes[i];
+      if ( !isAssignableFrom(possiblyPrimitiveType, objectType)) return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Checks if the given type1 is assignable from the given other type2. Consideres autoboxing - i.e. on the contrary to
+   * Class.isAssignableFrom an int is assignable from an integer
+   */
+  private static boolean isAssignableFrom(final Class<?> type1, final Class<?> type2) {
+    if (type1.equals(Integer.class) || type1.equals(int.class)) {
+      return type2.equals(Integer.class) || type2.equals(int.class);
+    } else if (type1.equals(Float.class) || type1.equals(float.class)) {
+      return type2.equals(Float.class) || type2.equals(float.class);
+    } else if (type1.equals(Double.class) || type1.equals(double.class)) {
+      return type2.equals(Double.class) || type2.equals(double.class);
+    } else if (type1.equals(Character.class) || type1.equals(char.class)) {
+      return type2.equals(Character.class) || type2.equals(char.class);
+    } else if (type1.equals(Long.class) || type1.equals(long.class)) {
+      return type2.equals(Long.class) || type2.equals(long.class);
+    } else if (type1.equals(Short.class) || type1.equals(short.class)) {
+      return type2.equals(Short.class) || type2.equals(short.class);
+    } else if (type1.equals(Boolean.class) || type1.equals(boolean.class)) {
+      return type2.equals(Boolean.class) || type2.equals(boolean.class);
+    } else if (type1.equals(Byte.class) || type1.equals(byte.class)) { return type2.equals(Byte.class) || type2.equals(byte.class); }
+    return type1.isAssignableFrom(type2);
   }
 
   /**
