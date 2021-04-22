@@ -760,7 +760,7 @@ public class PA<T> {
    * <code>
    * String myString = "Test"; <br/>
    * <br/>
-   * //setting the private field value<br/>
+   * //setting the private field value - will fail with JDK > 1.6<br/>
    * PA.setValue(myString, "value", new char[] {'T', 'e', 's', 't'});<br/>
    * <br/>
    * //setting the static final field serialVersionUID - MIGHT FAIL<br/>
