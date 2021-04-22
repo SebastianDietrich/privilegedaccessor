@@ -15,6 +15,7 @@ package junit.extensions;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -449,12 +450,16 @@ public class PA<T> {
    * @return this, so that calls to this method can be chained
    * @throws IllegalArgumentException if the value could not be set. This could be the case if no field with the given
    *         <code>fieldName</code> can be found; or if the field was final
-   * @see junit.extensions.PrivilegedAccessor#setValue(Object, String, Object)
    */
-  @SuppressWarnings("deprecation")
   public static <T> PA<T> setValue(final T instanceOrClass, final String fieldName, final Object value) {
     try {
-      PrivilegedAccessor.setValue(instanceOrClass, fieldName, value);
+      Field field = getField(instanceOrClass, fieldName);
+      if (Modifier.isFinal(field.getModifiers())) {
+        setValue(field, "modifiers", field.getModifiers() ^ Modifier.FINAL);
+        field.set(instanceOrClass, value);
+        setValue(field, "modifiers", field.getModifiers() | Modifier.FINAL);
+      }
+      field.set(instanceOrClass, value);
     } catch (Exception e) {
       throw new IllegalArgumentException("Can't set value " + value + " at " + fieldName + " in " + instanceOrClass, e);
     }
