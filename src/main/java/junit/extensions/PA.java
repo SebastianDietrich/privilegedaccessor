@@ -353,13 +353,31 @@ public class PA<T> {
    *         an abstract class.
    * @see PrivilegedAccessor#instantiate(Class, Object[])
    */
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings({"unchecked"})
   public static <T> T instantiate(final Class<? extends T> fromClass, final Object... arguments) {
     try {
-      return PrivilegedAccessor.instantiate(fromClass, correctVarargs(arguments));
+      final Object[] args = correctVarargs(arguments);
+      return (T) getConstructor(fromClass, getParameterTypes(args)).newInstance(args);
     } catch (Exception e) {
       throw new IllegalArgumentException("Can't instantiate class " + fromClass + " with arguments " + Arrays.toString(arguments), e);
     }
+  }
+
+  /**
+   * Gets the types of the parameters.
+   *
+   * @param parameters the parameters
+   * @return the class-types of the arguments
+   */
+  private static Class<?>[] getParameterTypes(final Object[] parameters) {
+    if (parameters == null) return new Class[0];
+
+    Class<?>[] typesOfParameters = new Class[parameters.length];
+
+    for (int i = 0; i < parameters.length; i++ ) {
+      typesOfParameters[i] = parameters[i].getClass();
+    }
+    return typesOfParameters;
   }
 
   /**
