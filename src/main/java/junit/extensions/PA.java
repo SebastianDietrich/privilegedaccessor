@@ -683,19 +683,19 @@ public class PA<T> {
 
   /**
    * Sets the value of the named field. If fieldName denotes a static field, provide a class, otherwise provide an instance. If the
-   * fieldName denotes a final field, this method tries to set it nevertheless (by temporarily removing the modifier).<br/>
-   * <br/>
-   * Example:<br/>
-   * <br/>
+   * fieldName denotes a final field, this method tries to set it nevertheless (by temporarily removing the modifier).<br>
+   * <br>
+   * Example:<br>
+   * <br>
    * <code>
-   * String myString = "Test"; <br/>
-   * <br/>
-   * //setting the private field value<br/>
-   * PA.setValue(myString, "value", new char[] {'T', 'e', 's', 't'});<br/>
-   * <br/>
-   * //setting the static final field serialVersionUID - MIGHT FAIL<br/>
-   * PA.setValue(myString.getClass(), "serialVersionUID", 1);<br/>
-   * <br/>
+   * String myString = "Test"; <br>
+   * <br>
+   * //setting the private field value<br>
+   * PA.setValue(myString, "value", new char[] {'T', 'e', 's', 't'});<br>
+   * <br>
+   * //setting the static final field serialVersionUID - MIGHT FAIL<br>
+   * PA.setValue(myString.getClass(), "serialVersionUID", 1);<br>
+   * <br>
    * </code>
    *
    * @param instanceOrClass the instance or class to set the field
@@ -753,19 +753,19 @@ public class PA<T> {
   /**
    * Sets the value of the named field. If fieldName denotes a static field, provide a class, otherwise provide an instance. If the
    * fieldName denotes a final field, this method could fail with an IllegalAccessException, since setting the value of final fields at
-   * other times than instantiation can have unpredictable effects.<br/>
-   * <br/>
-   * Example:<br/>
-   * <br/>
+   * other times than instantiation can have unpredictable effects.<br>
+   * <br>
+   * Example:<br>
+   * <br>
    * <code>
-   * String myString = "Test"; <br/>
-   * <br/>
-   * //setting the private field value - will fail with JDK > 1.6<br/>
-   * PA.setValue(myString, "value", new char[] {'T', 'e', 's', 't'});<br/>
-   * <br/>
-   * //setting the static final field serialVersionUID - MIGHT FAIL<br/>
-   * PA.setValue(myString.getClass(), "serialVersionUID", 1);<br/>
-   * <br/>
+   * String myString = "Test"; <br>
+   * <br>
+   * //setting the private field value - will fail with JDK after 1.6<br>
+   * PA.setValue(myString, "value", new char[] {'T', 'e', 's', 't'});<br>
+   * <br>
+   * //setting the static final field serialVersionUID - MIGHT FAIL<br>
+   * PA.setValue(myString.getClass(), "serialVersionUID", 1);<br>
+   * <br>
    * </code>
    *
    * @param fieldName the name of the field
