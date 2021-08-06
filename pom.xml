@@ -24,6 +24,7 @@
 	</licenses>
 
 	<!-- Used to upload artifacts to maven central - provides e.g. distributionManagement -->
+	<!-- is deprecated - so you might need to add those info here -->
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
@@ -119,7 +120,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- to generate sources -->
+			<!-- to generate a jar archive for the sources -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -170,6 +171,7 @@
 				</executions>
 			</plugin>
 
+			<!-- to be able to combine project output into a single distributable archive containing dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -181,6 +183,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- to be able to build jars -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

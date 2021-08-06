@@ -1,11 +1,25 @@
-== Version 1.2.1 (upcoming) ==
-Version 1.2.1 is the upcoming Java 1.5 (and later) compatible version of PrivilegedAccessor. 
+== Version 1.3 (6.8.2021) ==
+Version 1.3 is the Java 11 compatible version of PrivilegedAccessor.
+
+FUNCTIONAL CHANGES:
+ * Removed PrivilegedAccessor class, all functionality available via PA class
+
+FEATURES:
+ * method chaining when possible (e.g. PA.setValue(myObject, "myAttribute1", value1).setValue("myAttribute2", value2);)
+
+FIXED BUGS & ENHANCEMENTS:
+
+KNOWN BUGS:
+* depending on your jvm (or whatever) some accessors might not work - e.g. accessing private finals works when using mvn:test, but do not when using mvn:deploy
+
+== Version 1.2.2 (2.6.2013) - discontinued ==
+Version 1.2.2 is the latest Java 1.5 (and later) compatible version of PrivilegedAccessor. 
 
 FUNCTIONAL CHANGES:
  * Issue 12: setValue() can now set values of (non-static) final fields now possible - usually fails with static final fields.
 
 FEATURES:
- * imporved javadoc documentation
+ * improved javadoc documentation
 
 FIXED BUGS & ENHANCEMENTS:
  * Issue 12: setValue() can now set values of (non-static) final fields now possible - usually fails with static final fields.
@@ -13,7 +27,7 @@ FIXED BUGS & ENHANCEMENTS:
 KNOWN BUGS:
 none
 
-== Version 1.2 (25.2.2012) ==
+== Version 1.2 (25.2.2012) - discontinued ==
 Version 1.2 is the Java 1.5 (and later) compatible version of PrivilegedAccessor. 
 
 FUNCTIONAL CHANGES:

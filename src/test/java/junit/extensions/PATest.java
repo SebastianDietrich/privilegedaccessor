@@ -441,11 +441,11 @@ public class PATest {
     assertTrue(previousValue != -2);
 
     // The following tests run when using mvn:test, but do not run when using mvn:deploy
-    // PA.setValue(this.parent, "privateFinalInt", -2);
-    // assertEquals( -2, PA.getValue(this.parent, "privateFinalInt"));
-    //
-    // PA.setValue(this.parent, "privateFinalInt", previousValue);
-    // assertEquals(previousValue, PA.getValue(this.parent, "privateFinalInt"));
+    PA.setValue(this.parent, "privateFinalInt", -2);
+    assertEquals( -2, PA.getValue(this.parent, "privateFinalInt"));
+
+    PA.setValue(this.parent, "privateFinalInt", previousValue);
+    assertEquals(previousValue, PA.getValue(this.parent, "privateFinalInt"));
   }
 
   /**
@@ -459,11 +459,11 @@ public class PATest {
     assertNotEquals(previousValue, "Test");
 
     // The following tests run when using mvn:test, but do not run when using mvn:deploy
-    // PA.setValue(this.parent, "privateFinalString", "Test");
-    // assertEquals("Test", PA.getValue(this.parent, "privateFinalString"));
+    PA.setValue(this.parent, "privateFinalString", "Test");
+    assertEquals("Test", PA.getValue(this.parent, "privateFinalString"));
 
-    // PA.setValue(this.parent, "privateFinalString", previousValue);
-    // assertEquals(previousValue, PA.getValue(this.parent, "privateFinalString"));
+    PA.setValue(this.parent, "privateFinalString", previousValue);
+    assertEquals(previousValue, PA.getValue(this.parent, "privateFinalString"));
   }
 
   /**

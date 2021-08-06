@@ -58,7 +58,8 @@ PA (the convenience short form for PrivilegedAccessor) works with varargs and au
 
 == Compatibility ==
  * PrivilegedAccessor V 1.1.X is downward compatible to Java 1.3 (tested), but should work as well with newer releases (tested up to Java 1.7)
- * PrivilegedAccessor V 1.2 and onwards is downward compatible to Java 1.5 (tested), but should work as well with newer releases (tested up to Java 1.7)
+ * PrivilegedAccessor V 1.2.X is downward compatible to Java 1.5 (tested), but should work as well with newer releases (tested up to Java 1.7)
+ * PrivilegedAccessor V 1.3.X is downward compatible to Java 11 (tested), but should work as well with newer releases
 
 PrivilegedAccessor uses a lot of unit tests to check its functionality - if you find a bug or missing feature, please feel free to contact us.
 
