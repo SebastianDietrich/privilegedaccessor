@@ -12,7 +12,7 @@
         gives privileged access to private and protected methods and attributes.
         Use it in testing scenarios to set up your objects under test.
     </description>
-	<url>http://code.google.com/p/privilegedaccessor/</url>
+	<url>http://sebastiandietrich.github.io/privilegedaccessor/</url>
 	<packaging>jar</packaging>
 	<inceptionYear>2005</inceptionYear>
 	<licenses>
