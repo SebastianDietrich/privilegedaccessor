@@ -4,7 +4,8 @@ See http://sebastiandietrich.github.io/privilegedaccessor/ for usage instruction
 
 ## Development instructions
 [![Build Status](https://travis-ci.org/SebastianDietrich/privilegedaccessor.svg?branch=master)](https://travis-ci.org/SebastianDietrich/privilegedaccessor)
-Pure java implementation of a composite field based on AbstractCompositeField<Div, MoneyField, MonetaryAmount>
+
+With each java version internals become more and more restricted. E.g. final fields could be changed in previous versions of java. To find out what is possible with each version, we have excessive tests with a near 100% coverage. Nevertheless basics like accessing private fields or methods is and will be possible in all java versions.
 
 ## Publishing to Maven Central
 See https://maven.apache.org/repository/guide-central-repository-upload.html and https://central.sonatype.org/publish/publish-guide/
