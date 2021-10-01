@@ -1,9 +1,11 @@
 # Privileged Accessor
 PrivilegedAccessor is a simple to use Java framework for accessing private methods, attributes, and constructors via reflection.
-See http://sebastiandietrich.github.io/privilegedaccessor/ for usage instructions.
+See https://sebastiandietrich.github.io/privilegedaccessor/ for usage instructions.
 
 ## Development instructions
 [![Build Status](https://travis-ci.org/SebastianDietrich/privilegedaccessor.svg?branch=master)](https://travis-ci.org/SebastianDietrich/privilegedaccessor)
+[![Coverage Status](https://coveralls.io/repos/github/SebastianDietrich/privilegedaccessor/badge.svg?branch=master)](https://coveralls.io/github/SebastianDietrich/privilegedaccessor?branch=master)
+[![Stability: Maintenance](https://masterminds.github.io/stability/maintenance.svg)](https://masterminds.github.io/stability/maintenance.html)
 
 With each java version internals become more and more restricted. E.g. final fields could be changed in previous versions of java. To find out what is possible with each version, we have excessive tests with a near 100% coverage. Nevertheless basics like accessing private fields or methods is and will be possible in all java versions.
 
