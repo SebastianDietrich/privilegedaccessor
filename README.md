@@ -3,6 +3,7 @@ PrivilegedAccessor is a simple to use Java framework for accessing private metho
 See https://sebastiandietrich.github.io/privilegedaccessor/ for usage instructions.
 
 ## Development instructions
+[![Build Status](https://github.com/SebastianDietrich/privilegedaccessor/actions/workflows/maven.yml/badge.svg)](https://github.com/SebastianDietrich/privilegedaccessor/actions/workflows/maven.yml)
 [![Build Status](https://travis-ci.org/SebastianDietrich/privilegedaccessor.svg?branch=master)](https://travis-ci.org/SebastianDietrich/privilegedaccessor)
 [![Coverage Status](https://coveralls.io/repos/github/SebastianDietrich/privilegedaccessor/badge.svg?branch=master)](https://coveralls.io/github/SebastianDietrich/privilegedaccessor?branch=master)
 [![Stability: Maintenance](https://masterminds.github.io/stability/maintenance.svg)](https://masterminds.github.io/stability/maintenance.html)
