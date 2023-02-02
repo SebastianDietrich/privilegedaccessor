@@ -96,28 +96,6 @@
                 <version>2.22.2</version>
             </plugin>
 
-            <!-- Generate code-coverage reports. -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- to generate a coveralls coverage badge -->
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
-            </plugin>
-
             <!-- to set the version for the compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
